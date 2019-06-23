@@ -1,0 +1,47 @@
+.searchbar {
+  background-color: rgb(40, 48, 53);
+  overflow: hidden;
+  padding: 15px 30px 15px 30px;
+  display: flex;
+  position: fixed;
+  width: 100%;
+  z-index: 5;
+}
+
+.searchbar-placeholder {
+  height: 70px;
+}
+
+.pull-left {
+  float: left;
+  overflow: hidden;
+}
+
+.logo {
+  margin-right: 15px;
+  display: flex;
+  color: rgb(200, 200, 200);
+  margin-top: 4px;
+}
+
+.search {
+  display: flex;
+  flex: auto;
+
+  input {
+    width: 100%;
+    background-color: rgb(24, 29, 32);
+    border: 0;
+    border-radius: 2px;
+    padding: 5px 10px 5px 10px;
+    color: white;
+  }
+
+  input::-webkit-input-placeholder {
+    font-style: italic;
+  }
+
+  input:focus {
+    outline: none;
+  }
+}

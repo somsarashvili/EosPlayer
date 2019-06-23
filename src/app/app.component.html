@@ -1,0 +1,9 @@
+<div class="searchbar">
+    <div class="pull-left logo" (click)="goHome()">Eos Player </div>
+    <div class="pull-left search">
+        <input placeholder="Movie" [formControl]="searchKeyword">
+        <button (click)="search()">search</button>
+    </div>
+</div>
+<div class="searchbar-placeholder"></div>
+<router-outlet></router-outlet>

@@ -1,0 +1,35 @@
+<div class="container-fluid" infiniteScroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="50"
+  (scrolled)="onScroll()">
+  <div class="row" style="margin-left: 0; margin-right: 0" *ngIf="movies">
+    <div *ngFor="let item of movies" class="movie-block">
+      <div class="movie-container {{quality(item.quality)}}">
+        <div class="overlay">
+          <div class="aspect-ratio">
+            <div class="content">
+              <div class="title">
+                {{ quality(item.quality).toUpperCase() }} QUALITY
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="aspect-ratio">
+          <div class="content img-container"
+            [ngStyle]="{'background-image': 'url(' + formatUrl(item.id.toString()) + ')'}"> </div>
+        </div>
+        <div class="description">
+          <div class="title">
+            {{ item.nameEng ? item.nameEng : item.nameOriginal ? item.nameOriginal : item.nameRus }}
+          </div>
+          <div class="details">
+            <span class="rating">
+              <div class="star">☆</div> {{ item.rating.toString().substr(0, 3) }}
+            </span>
+            <span class="year">
+              {{ item.year }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

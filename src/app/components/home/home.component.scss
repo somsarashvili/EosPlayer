@@ -1,0 +1,133 @@
+@import "./../../../mixin.scss";
+
+.movie-block {
+  -webkit-box-flex: 0;
+  flex: 0 0 10%;
+  max-width: 10%;
+  padding-right: 15px;
+  padding-left: 15px;
+
+  .movie-container {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    background-color: rgb(21, 26, 30);
+    position: relative;
+
+    .aspect-ratio {
+      @include aspect-ratio(16, 24);
+
+      .img-container {
+        width: 100%;
+        background-size: cover;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+      }
+    }
+
+    .description {
+      padding: 10px;
+      font-size: 14px;
+
+      .title {
+        height: 67px;
+      }
+
+      .details {
+        font-size: 12px;
+
+        .rating {
+          color: orange;
+          margin-right: 3px;
+
+          .star {
+            float: left;
+            font-size: 16px;
+            margin-top: -4px;
+            margin-right: 2px;
+          }
+        }
+
+        .year {
+          color: gray;
+        }
+      }
+    }
+
+    .overlay {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      width: 100%;
+      background-color: rgba(0,0,0, 0.8);
+
+      .title {
+        margin-top: 30px; 
+        font-size: 11px;
+        text-align: center;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .movie-container:hover {
+    .overlay {
+      display: block;
+    }
+  }
+
+  .movie-container.high {
+    .overlay {
+      color: green;
+    }
+  }
+
+  .movie-container.medium {
+    .overlay {
+      color: orange;
+    }
+  }
+
+  .movie-container.low {
+    .overlay {
+      color: red;
+    }
+  }
+
+  .movie-container.high:before,
+  .movie-container.medium:before,
+  .movie-container.low:before {
+    content: '';
+    display: none;
+    position: absolute;
+    background-color: rgba(250, 180, 0);
+    border: 5px solid rgb(30, 37, 43);
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    z-index: 2;
+    left: -7px;
+    top: -7px;
+  }
+
+  .movie-container.high:hover:before,
+  .movie-container.medium:before,
+  .movie-container.low:before{
+    display: block;
+  }
+
+  .movie-container.high:before {
+    background-color: rgba(10, 150, 10);
+  }
+  
+  .movie-container.medium:before {
+    background-color: rgba(250, 180, 0);
+  }
+  
+  .movie-container.low:before {
+    background-color: rgba(130, 10, 10);
+  }
+
+}
