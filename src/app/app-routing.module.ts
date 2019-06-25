@@ -1,4 +1,3 @@
-import { PlayerComponent } from './components/player/player.component';
 import { MovieComponent } from './components/movie/movie.component';
 import { HomeComponent } from './components/home/home.component';
 import { NgModule } from '@angular/core';
@@ -16,10 +15,6 @@ const routes: Routes = [
     {
         path: 'movie/:id',
         component: MovieComponent
-    },
-    {
-        path: 'playing/:id',
-        component: PlayerComponent
     }
 ];
 

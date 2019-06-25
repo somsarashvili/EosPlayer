@@ -29,7 +29,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of torrents" (click)="checkHealth(item)">
-          <td (click)="play(item.torrent_download_link)"><fa-icon [icon]="faPlay"></fa-icon></td>
+          <td (click)="play(item.torrent_download_link, movie.nameEng ? movie.nameEng : movie.nameOriginal ? movie.nameOriginal : movie.nameRus)"><fa-icon [icon]="faPlay"></fa-icon></td>
           <td>{{ item.seeds }}/{{ item.peers }}</td>
           <td class="health health-{{ item._health ? item._health : 'unknown' }}"></td>
           <td>{{ quality(item.quality_id) }}</td>

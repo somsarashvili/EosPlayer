@@ -5,7 +5,9 @@ import { Torrent } from 'webtorrent';
 
 abstract class EosIPCserviceAbstract implements EosShared.EosIPCHandler {
   protected callerId: string = Math.random().toString();
-  abstract playTorrent(torrent: string);
+  abstract playTorrent(playTorrent: EosShared.Models.PlayTorrentRequest): Promise<EosShared.EosResult<Torrent>>;
+  abstract getPlayerStatus(): Promise<EosShared.EosResult<EosShared.Models.PlayerModel>>;
+  abstract closePlayer();
 
   protected subscribe() {
     ipcRenderer.send(EosShared.EosSystemEvent.SUBSCRIBE, this.callerId);
@@ -25,11 +27,9 @@ abstract class EosIPCserviceAbstract implements EosShared.EosIPCHandler {
 
   protected async ipcSend<T>(event: EosShared.EosIPC, payload?) {
     return await new Promise<T>((resolve, reject) => {
-      console.log(`waiting ${EosShared.EosIPCResult(event)}/${this.callerId}`);
       ipcRenderer.once(
         `${EosShared.EosIPCResult(event)}/${this.callerId}`,
         (sender, result: T) => {
-          console.log(`received${EosShared.EosIPCResult(event)}/${this.callerId}`);
           resolve(result);
         }
       );
@@ -53,10 +53,22 @@ export class EosIpcService extends EosIPCserviceAbstract {
     return EosIpcService.instance;
   }
 
-  async playTorrent(torrent: string) {
-    return await this.ipcSend<Torrent>(
+  async playTorrent(playTorrent: EosShared.Models.PlayTorrentRequest): Promise<EosShared.EosResult<Torrent>> {
+    return await this.ipcSend<EosShared.EosResult<Torrent>>(
       EosShared.EosIPC.PLAY_TORRENT,
-      torrent
+      playTorrent
+    );
+  }
+
+  async getPlayerStatus(): Promise<EosShared.EosResult<EosShared.Models.PlayerModel>> {
+    return await this.ipcSend<EosShared.EosResult<EosShared.Models.PlayerModel>>(
+      EosShared.EosIPC.GET_PLAYER_STATUS
+    );
+  }
+
+  async closePlayer() {
+    return await this.ipcSend<void>(
+      EosShared.EosIPC.CLOSE_PLAYER
     );
   }
 }

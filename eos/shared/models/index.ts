@@ -1,1 +1,2 @@
-export * from './event.torrent.progress';
+export * from './player.model';
+export * from './play.torrent.request';

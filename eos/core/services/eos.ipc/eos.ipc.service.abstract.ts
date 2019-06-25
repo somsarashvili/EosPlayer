@@ -4,14 +4,14 @@ import { EosIPCFunction } from '.';
 import * as log from 'electron-log';
 
 export abstract class EosIPCserviceAbstract implements EosShared.EosIPCHandler {
-  abstract playTorrent(torrent: string);
+  abstract playTorrent(torrent: EosShared.Models.PlayTorrentRequest);
+  abstract closePlayer();
+  abstract getPlayerStatus();
 
   protected async ipcReceive(eventName: EosShared.EosIPC, func: EosIPCFunction) {
     ipcMain.on(eventName, async (event, callerId, args) => {
-      console.log('ipcReceive', eventName, callerId);
       try {
         const res = await func(args);
-        console.log(`result: ${EosShared.EosIPCResult(eventName)}/${callerId}`);
         event.sender.send(`${EosShared.EosIPCResult(eventName)}/${callerId}`, res);
       } catch (err) {
         console.error('err', err);

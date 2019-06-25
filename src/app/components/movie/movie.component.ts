@@ -19,6 +19,7 @@ export class MovieComponent implements OnInit {
   private id: number;
   private WebtorrentHealth;
   private sender = Math.random();
+  private readonly player: PlayerService;
   movie: MovieDetailsDTO;
   torrents: ZonaTorrent[];
   faPlay = faPlay;
@@ -32,8 +33,9 @@ export class MovieComponent implements OnInit {
     private readonly eosApi: APIClient,
     private readonly zonaApi: ZonaAPIClient,
     private readonly loader: LoaderService,
-    private readonly player: PlayerService,
     private readonly router: Router) {
+
+    this.player = PlayerService.INSTANCE;
     this.WebtorrentHealth = electron.remote.require('webtorrent-health');
   }
 
@@ -67,9 +69,8 @@ export class MovieComponent implements OnInit {
     });
   }
 
-  play(torrent: string) {
-    this.player.playTorrent(torrent);
-    this.router.navigate(['/playing', this.id]);
+  play(torrent: string, name: string) {
+    this.player.playTorrent({ torrent: torrent, name: name });
   }
 
   duarationFormat(duration: number) {

@@ -1,5 +1,4 @@
-
-.body{
+.body {
   padding-top: 15px;
   max-height: calc(100vh - 94px);
   overflow: hidden;
@@ -15,63 +14,71 @@
   top: 30px;
   width: 100%;
   z-index: 5;
-  .slider {
-    position: absolute;
-    width: 100%;
-    height: 5px;
-    overflow-x: hidden;
-    left: 0;
-    top: 60px;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-  }
-
-  .loading.slider {
-    opacity: 1;
-  }
-
-  .line {
-    position: absolute;
-    opacity: 0.4;
-    background: #4a8df8;
-    width: 150%;
-    height: 5px;
-  }
-
-  .subline {
-    position: absolute;
-    background: #4a8df8;
-    height: 5px;
-  }
-  .loading .inc {
-    animation: increase 2s infinite;
-  }
-  .loading .dec {
-    animation: decrease 2s 0.5s infinite;
-  }
-
-  @keyframes increase {
-    from {
-      left: -5%;
-      width: 5%;
-    }
-    to {
-      left: 130%;
-      width: 100%;
-    }
-  }
-  @keyframes decrease {
-    from {
-      left: -80%;
-      width: 80%;
-    }
-    to {
-      left: 110%;
-      width: 10%;
-    }
-  }
 }
 
+.slider {
+  position: absolute;
+  width: 100%;
+  height: 5px;
+  overflow-x: hidden;
+  left: 0;
+  top: 60px;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.slider.progress {
+  opacity: 1;
+  bottom: 0;
+  top: auto;
+}
+
+.loading.slider {
+  opacity: 1;
+}
+
+.line {
+  position: absolute;
+  //opacity: 0.4;
+  background: #555; //#4a8df8;
+  width: 150%;
+  height: 5px;
+}
+
+.subline {
+  position: absolute;
+  background: #161813; //#4a8df8;
+  height: 5px;
+}
+
+.loading .inc {
+  animation: increase 2s infinite;
+}
+
+.loading .dec {
+  animation: decrease 2s 0.5s infinite;
+}
+
+@keyframes increase {
+  from {
+    left: -5%;
+    width: 5%;
+  }
+  to {
+    left: 130%;
+    width: 100%;
+  }
+}
+@keyframes decrease {
+  from {
+    left: -80%;
+    width: 80%;
+  }
+  to {
+    left: 110%;
+    width: 10%;
+  }
+}
 .searchbar-placeholder {
   height: 64px;
 }
@@ -124,5 +131,47 @@
 
   input:focus {
     outline: none;
+  }
+}
+.player {
+  display: none;
+  width: 100%;
+
+  .container-fluid {
+    position: fixed;
+    bottom: 0;
+    background-color: #283035;
+    width: 100%;
+    z-index: 5;
+    padding: 20px;
+
+    .img-container {
+      margin-right: 15px;
+      img {
+        max-height: 60px;
+      }
+    }
+
+    .playing-details {
+      margin-top: 3px;
+      small {
+        color: #aaa;
+      }
+    }
+    .download-details {
+      float: right;
+      text-align: right;
+      margin-top: 3px;
+    }
+  }
+}
+
+.playing {
+  .body {
+    max-height: calc(100vh - 194px);
+  }
+
+  .player {
+    display: block;
   }
 }

@@ -25,7 +25,6 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { MovieComponent } from './components/movie/movie.component';
 import { APIClientModule } from './api/eos';
-import { PlayerComponent } from './components/player/player.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -37,8 +36,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     HomeComponent,
     WebviewDirective,
-    MovieComponent,
-    PlayerComponent
+    MovieComponent
   ],
   imports: [
     APIClientModule.forRoot({
@@ -64,8 +62,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [
     ElectronService,
-    LoaderService,
-    PlayerService
+    LoaderService
   ],
   bootstrap: [AppComponent]
 })

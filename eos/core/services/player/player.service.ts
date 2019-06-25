@@ -16,9 +16,15 @@ export class PlayerService {
   private eventService: EosCoreServices.EventService;
   private server: Server;
   private vlc: child_process.ChildProcess;
-  private torrentProgress: EosShared.Models.TorrentProgress;
-  private progressInterval;
+  private playerData: EosShared.Models.PlayerModel;
   private constructor() {
+    this.playerData = {
+      playing: false,
+      name: '',
+      downloadProgress: 0,
+      downloadSpeed: 0,
+      peers: 0
+    };
     this.webTorrent = new WebTorrent();
     this.eventService = EosCoreServices.EventService.INSTANCE;
   }
@@ -37,6 +43,10 @@ export class PlayerService {
     return Math.floor(Math.random() * (max - min)) + min;
   }
 
+  getPlayerStatus() {
+    return this.playerData;
+  }
+
   async close() {
     if (this.torrent) {
       this.torrent.destroy();
@@ -52,23 +62,32 @@ export class PlayerService {
       this.vlc.kill();
     }
 
-    clearInterval(this.progressInterval);
+    this.playerData = {
+      name: '',
+      downloadSpeed: 0,
+      peers: 0,
+      downloadProgress: 0,
+      playing: false
+    };
   }
 
-  async playTorrent(torrent: string) {
-    this.torrentProgress = {
-      downloadSpeed: 0,
-      peers: 0
-    };
-
+  async playTorrent(playRequest: EosShared.Models.PlayTorrentRequest) {
     this.close();
+
+    this.playerData = {
+      name: playRequest.name,
+      downloadSpeed: 0,
+      peers: 0,
+      downloadProgress: 0,
+      playing: true
+    };
 
     return await new Promise((resolve, reject) => {
       const re = /(?:\.([^.]+))?$/;
       const port = this.generateTrandomPort();
       let fileIndex = 0;
 
-      this.webTorrent.add(torrent, (torrentClient: any) => {
+      this.webTorrent.add(playRequest.torrent, (torrentClient: any) => {
         this.torrent = torrentClient;
         this.torrent.deselect(0, torrentClient.pieces.length - 1, 0); // Remove default selection (whole torrent)
         // tslint:disable-next-line: forin
@@ -82,22 +101,12 @@ export class PlayerService {
           }
         }
 
-        this.torrent.on('done', () => {
-          console.log('done');
-          this.eventService.sendEvent(EosShared.EosEvent.TORRENT_DOWNLOADED, true);
-          clearInterval(this.progressInterval);
-        });
-
         this.torrent.on('download', () => {
-          this.torrentProgress = {
-            peers: this.torrent.numPeers,
-            downloadSpeed: this.torrent.downloadSpeed
-          };
+          this.playerData.peers = this.torrent.numPeers;
+          this.playerData.downloadSpeed = this.torrent.downloadSpeed;
+          this.playerData.downloadProgress = this.torrent.progress;
+          this.playerData.playing = true;
         });
-
-        this.progressInterval = setInterval(() => {
-          this.eventService.sendEvent(EosShared.EosEvent.TORRENT_DOWNLOADING, this.torrentProgress);
-        }, 1000);
 
         this.server = this.torrent.createServer();
         this.server.listen(port);

@@ -31,9 +31,7 @@ export class EventService {
     return EventService.instance;
   }
 
-  sendEvent(name: EosShared.EosEvent.PLAYER_URL, data: string);
-  sendEvent(name: EosShared.EosEvent.TORRENT_DOWNLOADING, data: EosShared.Models.TorrentProgress);
-  sendEvent(name: EosShared.EosEvent.TORRENT_DOWNLOADED | EosShared.EosEvent.PLAYER_CLOSED, data: boolean);
+  sendEvent(name: EosShared.EosEvent.PLAYER_CLOSED, data: boolean);
   sendEvent(name: EosShared.EosEvent, data: any) {
     log.info('sendEvent', name, data);
     log.info('subscribers', this.subscribers.length);

@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public keyword: string;
   private loading = false;
   private sender = Math.random();
+  private onScrollCallback;
   faList = faList;
 
   movies: MovieDTO[] = [];
@@ -30,12 +31,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     private readonly api: APIClient,
     private readonly activeRoute: ActivatedRoute,
     private readonly router: Router,
-    private readonly loader: LoaderService) { }
+    private readonly loader: LoaderService) {
+    this.onScrollCallback = this.onScroll.bind(this);
+  }
+
 
   ngOnInit() {
-    window.addEventListener('scroll', () => {
-      this.onScroll();
-    }, true);
+    window.addEventListener('scroll', this.onScrollCallback, true);
     this.loader.setSender(this.sender);
     this.done = false;
     this.sub = this.activeRoute.params.subscribe(params => {
@@ -107,6 +109,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    console.log('removing');
+    window.removeEventListener('scroll', this.onScrollCallback, true);
   }
 
   quality(quality: number) {

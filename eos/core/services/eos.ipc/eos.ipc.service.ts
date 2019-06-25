@@ -23,9 +23,28 @@ export class EosIPCService extends EosIPCserviceAbstract {
   }
 
   playTorrent() {
-    this.ipcReceive(EosShared.EosIPC.PLAY_TORRENT, async (torrent: string) => {
-      const result =  await this.player.playTorrent(torrent);
-      console.log('sending torretn1');
+    this.ipcReceive(EosShared.EosIPC.PLAY_TORRENT, async (torrent: EosShared.Models.PlayTorrentRequest) => {
+      const result = await this.player.playTorrent(torrent);
+      return {
+        result: result,
+        err: false
+      };
+    });
+  }
+
+  closePlayer() {
+    this.ipcReceive(EosShared.EosIPC.CLOSE_PLAYER, async (arg) => {
+      const result = await this.player.close();
+      return {
+        result: result,
+        err: false
+      };
+    });
+  }
+
+  getPlayerStatus() {
+    this.ipcReceive(EosShared.EosIPC.GET_PLAYER_STATUS, async (arg) => {
+      const result = await this.player.getPlayerStatus();
       return {
         result: result,
         err: false

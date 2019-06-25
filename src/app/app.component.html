@@ -13,6 +13,27 @@
   </div>
 </div>
 <div class="searchbar-placeholder"></div>
-<div class="body">
-  <router-outlet></router-outlet>
+<div class="{{ playerStatus.playing ? 'playing' : '' }}">
+  <div class="body">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="player">
+    <div class="container-fluid">
+      <div class="pull-left img-container">
+        <img src="http://img2.zonapic.com/images/film_240/994/994864.jpg">
+      </div>
+      <div class="pull-left playing-details">
+        <small>Now playing:</small><br>
+        {{ playerStatus.name }}
+      </div>
+      <div class="download-details">
+        <small>Peers: {{ playerStatus.peers }}</small><br>
+        Speed: {{ downloadSpeed(playerStatus.downloadSpeed) }}
+      </div>
+      <div class="slider progress">
+        <div class="line"></div>
+        <div class="subline" [ngStyle]="{'width': progress(playerStatus.downloadProgress) + '%'}"></div>
+      </div>
+    </div>
+  </div>
 </div>
