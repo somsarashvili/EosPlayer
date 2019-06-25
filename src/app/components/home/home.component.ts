@@ -1,11 +1,13 @@
 import { ElectronService } from './../../providers/electron.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { APIClient } from '../../api';
 import { HttpHeaders } from '@angular/common/http';
-import * as child_process from 'child_process'
+import * as child_process from 'child_process';
 import * as vlc from 'vlc-command';
-import { MovieDTO } from '../../api/models';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { MovieDTO } from '../../api/eos/models';
+import { APIClient } from '../../api/eos';
+import { faList } from '@fortawesome/free-solid-svg-icons';
+import { LoaderService } from '../../services/loader.service';
 
 @Component({
   selector: 'app-home',
@@ -15,80 +17,91 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 export class HomeComponent implements OnInit, OnDestroy {
   private page = 1;
   private perPage = 50;
+  private done = false;
   private sub: any;
   public keyword: string;
+  private loading = false;
+  private sender = Math.random();
+  faList = faList;
 
   movies: MovieDTO[] = [];
 
   constructor(private readonly electron: ElectronService,
     private readonly api: APIClient,
     private readonly activeRoute: ActivatedRoute,
-    private readonly router: Router) {
-    router.events.subscribe((val) => {
-      console.log(val instanceof NavigationEnd);
-      console.log(!this.sub);
-      if (val instanceof NavigationEnd && this.sub) {
-        console.log('updating');
-        this.movies = [];
-        this.page = 1;
-        this.ngOnInit();
-      }
-    });
-  }
+    private readonly router: Router,
+    private readonly loader: LoaderService) { }
 
   ngOnInit() {
+    window.addEventListener('scroll', () => {
+      this.onScroll();
+    }, true);
+    this.loader.setSender(this.sender);
+    this.done = false;
     this.sub = this.activeRoute.params.subscribe(params => {
       this.keyword = params['keyword'];
+      this.page = 1;
+      this.perPage = 50;
+      this.done = false;
+      this.movies = [];
+      this.loadData();
     });
-    this.onScroll();
   }
 
-  play() {
-
-    vlc(function (err, cmd) {
-      if (err) return console.error('could not find vlc command path')
-
-      if (process.platform === 'win32') {
-        console.log(cmd);
-        var child = child_process.execFile(cmd, ['--fullscreen', 'E:\\Zona Downloads\\Boje.Blagoslovi.Ameriku.2011.BDRip1080p-F.HD .mkv'], function (err, stdout) {
-          if (err) return console.error(err)
-          console.log(stdout)
-        });
-        child.once('close', () => alert('closed'));
-      } else {
-        child_process.exec(cmd + ' --version', function (err, stdout) {
-          if (err) return console.error(err)
-          console.log(stdout)
-        })
-      }
-    })
+  goToMovie(id: number) {
+    this.router.navigate(['/movie', id]);
   }
 
   formatUrl(id: string) {
     let sub = id.substr(0, id.length - 3);
 
-    if (sub == "") {
-      sub = "0";
+    if (sub === '') {
+      sub = '0';
     }
 
-    return `http://img2.zonapic.com/images/film\_240/${sub}/${id}.jpg`
+    return `http://img2.zonapic.com/images/film\_240/${sub}/${id}.jpg`;
+  }
+
+  private offset(el) {
+    const rect = el.getBoundingClientRect(),
+      scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+      scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
   }
 
   onScroll() {
-    console.log(this.keyword);
+    const offset = this.offset(document.getElementById('scroll-end'));
+    const height = window.innerHeight;
+    if (offset.top - height < 1500) {
+      this.loadData();
+    }
+  }
+
+  loadData() {
+    console.log(this.loading, this.done);
+    if (this.loading || this.done) { return; }
+    this.loading = true;
+    this.loader.emitLoading(this.sender, true);
     const requst: any = { page: this.page, perPage: this.perPage };
     if (this.keyword) {
-      requst.searchKeyword = this.keyword
+      requst.searchKeyword = this.keyword;
     }
-    this.api.getMovies(requst, {
+    this.api.list(requst, {
       headers: new HttpHeaders(
         {
           'Accept': 'application/json',
           'rejectUnauthorized': 'false'
         })
     }).subscribe((data) => {
+      this.loading = false;
+      this.loader.emitLoading(this.sender, false);
+      if (data.movies.length === 0) {
+        this.done = true;
+        return;
+      }
       this.movies = this.movies.concat(data.movies);
       this.page++;
+      this.loader.emitLoading(this.sender, false);
     });
   }
 
@@ -102,7 +115,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       case -2:
       case -1:
       case 0: {
-        return "3d"
+        return '3d';
       }
       case 1:
       case 2:
@@ -111,21 +124,21 @@ export class HomeComponent implements OnInit, OnDestroy {
       case 5:
       case 6:
       case 7: {
-        return "high"
+        return 'high';
       }
       case 8:
       case 9:
       case 10:
       case 11:
       case 12: {
-        return "medium"
+        return 'medium';
       }
       case 13:
       case 14: {
-        return "low"
+        return 'low';
       }
       default: {
-        return "unknown"
+        return 'unknown';
       }
 
     }

@@ -1,9 +1,18 @@
 <div class="searchbar">
-    <div class="pull-left logo" (click)="goHome()">Eos Player </div>
-    <div class="pull-left search">
-        <input placeholder="Movie" [formControl]="searchKeyword">
-        <button (click)="search()">search</button>
-    </div>
+  <div class="pull-left logo" (click)="goHome()">Eos Player </div>
+  <div class="pull-left search">
+    <input placeholder="Movie" [formControl]="searchKeyword" (keyup.enter)="search()">
+    <button (click)="search()" class="search-button">
+      <fa-icon [icon]="faSearch"></fa-icon>
+    </button>
+  </div>
+  <div class="slider {{ isLoading ? 'loading' : ''}}">
+    <div class="line"></div>
+    <div class="subline inc"></div>
+    <div class="subline dec"></div>
+  </div>
 </div>
 <div class="searchbar-placeholder"></div>
-<router-outlet></router-outlet>
+<div class="body">
+  <router-outlet></router-outlet>
+</div>

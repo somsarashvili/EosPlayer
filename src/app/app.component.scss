@@ -1,15 +1,79 @@
+
+.body{
+  padding-top: 15px;
+  max-height: calc(100vh - 94px);
+  overflow: hidden;
+  display: block;
+  overflow-y: scroll;
+}
 .searchbar {
   background-color: rgb(40, 48, 53);
   overflow: hidden;
   padding: 15px 30px 15px 30px;
   display: flex;
   position: fixed;
+  top: 30px;
   width: 100%;
   z-index: 5;
+  .slider {
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    overflow-x: hidden;
+    left: 0;
+    top: 60px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .loading.slider {
+    opacity: 1;
+  }
+
+  .line {
+    position: absolute;
+    opacity: 0.4;
+    background: #4a8df8;
+    width: 150%;
+    height: 5px;
+  }
+
+  .subline {
+    position: absolute;
+    background: #4a8df8;
+    height: 5px;
+  }
+  .loading .inc {
+    animation: increase 2s infinite;
+  }
+  .loading .dec {
+    animation: decrease 2s 0.5s infinite;
+  }
+
+  @keyframes increase {
+    from {
+      left: -5%;
+      width: 5%;
+    }
+    to {
+      left: 130%;
+      width: 100%;
+    }
+  }
+  @keyframes decrease {
+    from {
+      left: -80%;
+      width: 80%;
+    }
+    to {
+      left: 110%;
+      width: 10%;
+    }
+  }
 }
 
 .searchbar-placeholder {
-  height: 70px;
+  height: 64px;
 }
 
 .pull-left {
@@ -22,11 +86,28 @@
   display: flex;
   color: rgb(200, 200, 200);
   margin-top: 4px;
+  cursor: pointer;
 }
 
 .search {
   display: flex;
   flex: auto;
+
+  .search-button {
+    background: rgba(128, 128, 128, 0.4);
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border: 0;
+    color: white;
+    position: absolute;
+    padding: 5px 15px;
+    right: 30px;
+    top: 15px;
+    outline: none;
+  }
+  .search-button:hover {
+    background: rgba(128, 128, 128, 0.9);
+  }
 
   input {
     width: 100%;

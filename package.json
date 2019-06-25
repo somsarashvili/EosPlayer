@@ -1,23 +1,11 @@
 {
-  "name": "angular-electron",
-  "version": "6.0.1",
-  "description": "Angular 8 with Electron (Typescript + SASS + Hot Reload)",
-  "homepage": "https://github.com/maximegris/angular-electron",
-  "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
-  },
-  "keywords": [
-    "angular",
-    "angular 8",
-    "electron",
-    "typescript",
-    "sass"
-  ],
+  "name": "EosPlayer",
+  "version": "0.0.2",
+  "description": "EosPlayer",
   "main": "main.js",
   "private": true,
   "scripts": {
-    "generateapi": "api-client-generator -s ./swagger.json -o ./src/app/api",
+    "generateapi": "api-client-generator -s ./swagger.json -o ./src/app/api/eos",
     "postinstall": "npm run postinstall:electron && electron-builder install-app-deps",
     "postinstall:web": "node postinstall-web",
     "postinstall:electron": "node postinstall",
@@ -50,12 +38,16 @@
     "@angular/platform-browser": "8.0.0",
     "@angular/platform-browser-dynamic": "8.0.0",
     "@angular/router": "8.0.0",
+    "@fortawesome/angular-fontawesome": "^0.4.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.19",
+    "@fortawesome/free-solid-svg-icons": "^5.9.0",
     "@ngx-translate/core": "11.0.1",
     "@ngx-translate/http-loader": "4.0.0",
     "@types/jasmine": "2.8.7",
     "@types/jasminewd2": "2.0.3",
     "@types/mocha": "5.2.6",
     "@types/node": "8.9.4",
+    "api-client-generator": "^4.2.0",
     "bootstrap": "^4.3.1",
     "chai": "4.2.0",
     "codelyzer": "5.0.1",
@@ -90,6 +82,12 @@
     "node": ">=10.9.0"
   },
   "dependencies": {
-    "vlc-command": "^1.1.2"
+    "@types/webtorrent": "^0.98.5",
+    "custom-electron-titlebar": "^3.0.10",
+    "electron-log": "^3.0.6",
+    "vlc-command": "^1.1.2",
+    "webtorrent": "^0.103.4",
+    "webtorrent-health": "^1.1.2",
+    "webtorrent-hybrid": "^2.1.1"
   }
 }

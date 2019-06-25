@@ -3,5 +3,16 @@
       "HOME": {
           "TITLE": "App works !"
       }
+  },
+  "TORRENTS": {
+    "TORRENTS": "Torrents",
+    "HEALTH": "Health",
+    "SEEDS": "Seeds",
+    "QUALITY": "Quality",
+    "VIDEO": "Video",
+    "LANGUAGE": "Language",
+    "SUBTITLES": "Subtitles",
+    "VOICES": "Voices",
+    "SIZE": "Size"
   }
 }

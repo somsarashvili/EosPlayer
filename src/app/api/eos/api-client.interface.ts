@@ -6,7 +6,7 @@ import * as models from './models';
 
 export interface APIClientInterface {
 
-  getMovies(
+  list(
     args: {
       page?: number,
       perPage?: number,
@@ -14,5 +14,12 @@ export interface APIClientInterface {
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.MoviesDTO>;
+
+  details(
+    args: {
+      id?: number,
+    },
+    requestHttpOptions?: HttpOptions
+  ): Observable<models.MovieDetailsDTO>;
 
 }

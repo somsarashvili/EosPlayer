@@ -1,0 +1,71 @@
+h1 {
+  text-align: center;
+}
+
+.description {
+  margin-top: 50px;
+  overflow: hidden;
+
+  .image {
+    width: 40%;
+    float: left;
+    padding-right: 30px;
+
+    img {
+      float: right;
+    }
+  }
+  .data {
+    width: 60%;
+    float: left;
+    padding-right: 50px;
+  }
+}
+.torrents {
+  width: 80%;
+  margin: 80px auto;
+
+  hr {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 30px;
+  }
+  table tr td {
+    padding: 10px 5px;
+  }
+  table tr td:nth-of-type(7) {
+    max-width: 100px;
+  }
+  table tr td:nth-of-type(8) {
+    max-width: 100px;
+  }
+
+  .health {
+    position: relative;
+  }
+
+  .health:before {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 5px;
+    margin-left: 12px;
+  }
+
+  .health.health-excellent::before {
+    background: green;
+  }
+
+  .health.health-good::before {
+    background: lightgreen;
+  }
+
+  .health.health-medium::before {
+    background: orange;
+  }
+
+  .health.health-bad::before {
+    background: red;
+  }
+}

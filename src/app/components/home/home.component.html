@@ -1,13 +1,15 @@
-<div class="container-fluid" infiniteScroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="50"
-  (scrolled)="onScroll()">
+<div class="container-fluid">
   <div class="row" style="margin-left: 0; margin-right: 0" *ngIf="movies">
-    <div *ngFor="let item of movies" class="movie-block">
+    <div *ngFor="let item of movies" class="movie-block" (click)="goToMovie(item.id)">
       <div class="movie-container {{quality(item.quality)}}">
         <div class="overlay">
           <div class="aspect-ratio">
             <div class="content">
               <div class="title">
                 {{ quality(item.quality).toUpperCase() }} QUALITY
+              </div>
+              <div class="play">
+                <fa-icon [icon]="faList"></fa-icon>
               </div>
             </div>
           </div>
@@ -33,3 +35,4 @@
     </div>
   </div>
 </div>
+<div id="scroll-end"></div>

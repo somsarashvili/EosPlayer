@@ -1,3 +1,5 @@
+import { PlayerComponent } from './components/player/player.component';
+import { MovieComponent } from './components/movie/movie.component';
 import { HomeComponent } from './components/home/home.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -10,6 +12,14 @@ const routes: Routes = [
     {
         path: 'search/:keyword',
         component: HomeComponent
+    },
+    {
+        path: 'movie/:id',
+        component: MovieComponent
+    },
+    {
+        path: 'playing/:id',
+        component: PlayerComponent
     }
 ];
 

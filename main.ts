@@ -1,4 +1,5 @@
 import { app, BrowserWindow, screen } from 'electron';
+import { EosCoreServices} from './eos/core/eos.core.services';
 import * as path from 'path';
 import * as url from 'url';
 
@@ -6,6 +7,9 @@ let win: BrowserWindow;
 let serve;
 const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
+const eventService =  EosCoreServices.EventService.INSTANCE;
+const playerService = EosCoreServices.PlayerService.INSTANCE;
+const eosIpcService = EosCoreServices.EosIPCService.INSTANCE;
 
 function createWindow() {
 
@@ -19,8 +23,9 @@ function createWindow() {
     width: size.width,
     height: size.height,
     webPreferences: {
+      webSecurity: false,
       nodeIntegration: true,
-    },
+    }, frame: false
   });
 
   // win.setMenu(null);
@@ -37,6 +42,7 @@ function createWindow() {
       slashes: true
     }));
   }
+  win.setMenu(null);
 
   if (serve) {
     win.webContents.openDevTools();

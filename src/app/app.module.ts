@@ -1,3 +1,7 @@
+import { PlayerService } from './services/player.service';
+import { LoaderService } from './services/loader.service';
+import { ZonaAPIClientModule } from './api/zona/index';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import 'reflect-metadata';
 import '../polyfills';
 import { BrowserModule } from '@angular/platform-browser';
@@ -19,7 +23,9 @@ import { WebviewDirective } from './directives/webview.directive';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
-import { APIClientModule } from './api';
+import { MovieComponent } from './components/movie/movie.component';
+import { APIClientModule } from './api/eos';
+import { PlayerComponent } from './components/player/player.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -30,16 +36,22 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [
     AppComponent,
     HomeComponent,
-    WebviewDirective
+    WebviewDirective,
+    MovieComponent,
+    PlayerComponent
   ],
   imports: [
     APIClientModule.forRoot({
-      domain: 'https://localhost:44317', // or use value defined in environment `environment.apiUrl`
+      domain: 'http://eos.sol.ge', // or use value defined in environment `environment.apiUrl`
+    }),
+    ZonaAPIClientModule.forRoot({
+      domain: 'http://zsolr3.zonasearch.com/solr/torrent/select/'
     }),
     InfiniteScrollModule,
     BrowserModule,
     FormsModule,
-    HttpClientModule, 
+    HttpClientModule,
+    FontAwesomeModule,
     ReactiveFormsModule,
     AppRoutingModule,
     TranslateModule.forRoot({
@@ -50,7 +62,11 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [ElectronService],
+  providers: [
+    ElectronService,
+    LoaderService,
+    PlayerService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

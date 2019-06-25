@@ -1,9 +1,20 @@
+import { Common } from './common';
 import { Component } from '@angular/core';
 import { ElectronService } from './providers/electron.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { faSearch, faTimes, faWindowMaximize, faWindowRestore, faWindowMinimize } from '@fortawesome/free-solid-svg-icons';
+import { LoaderService } from './services/loader.service';
+import { BrowserWindow } from 'electron';
+import { Observable } from 'rxjs';
+import { Titlebar, Color } from 'custom-electron-titlebar';
+declare global {
+  interface Window {
+    Common: typeof Common;
+  }
+}
 
 @Component({
   selector: 'app-root',
@@ -11,13 +22,43 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public searchKeyword = new FormControl('');
+  private window: BrowserWindow;
+
+  searchKeyword = new FormControl('');
+  faSearch = faSearch;
+  faWindowClose = faTimes;
+  faWindowMaximize = faWindowMaximize;
+  faWindowRestore = faWindowRestore;
+  faWindowMinimize = faWindowMinimize;
+  isMaximized: boolean;
+  isLoading = true;
 
   constructor(public electronService: ElectronService,
     private translate: TranslateService,
-    private router: Router) {
+    private router: Router,
+    private readonly loader: LoaderService) {
 
-    translate.setDefaultLang('en');
+    new Titlebar({
+      backgroundColor: Color.fromHex('#394146'),
+      icon: './favicon.png',
+      menu: null
+    });
+    this.window = electronService.remote.getCurrentWindow();
+    new Observable(observable => {
+      this.window.on('move', () => {
+        console.log('maximize');
+        this.isMaximized = this.window.isMaximized();
+        observable.next();
+      });
+      this.window.on('unmaximize', () => {
+        this.isMaximized = this.window.isMaximized();
+        observable.next();
+      });
+    });
+    if (!localStorage.getItem('language')) {
+      localStorage.setItem('language', 'en');
+    }
+    translate.setDefaultLang(localStorage.getItem('language'));
     console.log('AppConfig', AppConfig);
 
     if (electronService.isElectron()) {
@@ -27,6 +68,8 @@ export class AppComponent {
     } else {
       console.log('Mode web');
     }
+    window.Common = Common;
+    loader.loading$.subscribe(item => this.isLoading = item);
   }
 
   search() {
@@ -36,5 +79,17 @@ export class AppComponent {
 
   goHome() {
     this.router.navigate(['/']);
+  }
+
+  windowClose() {
+
+  }
+
+  windowToggle() {
+
+  }
+
+  windowMinimize() {
+
   }
 }

@@ -1,7 +1,11 @@
 /* tslint:disable */
 
-export interface MovieDTO {
+export interface MovieDetailsDTO {
   audioQuality?: number;
+  country?: string;
+  description?: string;
+  descriptionEng?: string;
+  genreName?: string;
   id?: number;
   nameEng?: string;
   nameOriginal?: string;

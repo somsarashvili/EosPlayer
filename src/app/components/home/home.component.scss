@@ -1,9 +1,9 @@
 @import "./../../../mixin.scss";
 
 .movie-block {
-  -webkit-box-flex: 0;
-  flex: 0 0 10%;
-  max-width: 10%;
+  flex: 1 1 0;
+  min-width: 190px;
+  max-width: 380px;
   padding-right: 15px;
   padding-left: 15px;
 
@@ -13,6 +13,7 @@
     border-radius: 5px;
     background-color: rgb(21, 26, 30);
     position: relative;
+    cursor: pointer;
 
     .aspect-ratio {
       @include aspect-ratio(16, 24);
@@ -61,13 +62,34 @@
       left: 0;
       z-index: 1;
       width: 100%;
-      background-color: rgba(0,0,0, 0.8);
+      background-color: rgba(0, 0, 0, 0.8);
 
       .title {
-        margin-top: 30px; 
+        margin-top: 30px;
         font-size: 11px;
         text-align: center;
         font-weight: bold;
+      }
+
+      .play {
+        color: white;
+        font-size: 45px;
+        margin: 0 auto;
+        width: 90px;
+        height: 90px;
+        border: 1px solid white;
+        text-align: center;
+        border-radius: 45px;
+        position: relative;
+        margin-top: 50px;
+        cursor: pointer;
+
+        fa-icon {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
       }
     }
   }
@@ -75,6 +97,17 @@
   .movie-container:hover {
     .overlay {
       display: block;
+
+      .play:hover {
+        color: blue;
+        background-color: white;
+      }
+    }
+
+    .description {
+      .title {
+        color: rgb(0, 148, 246);
+      }
     }
   }
 
@@ -99,7 +132,7 @@
   .movie-container.high:before,
   .movie-container.medium:before,
   .movie-container.low:before {
-    content: '';
+    content: "";
     display: none;
     position: absolute;
     background-color: rgba(250, 180, 0);
@@ -114,20 +147,19 @@
 
   .movie-container.high:hover:before,
   .movie-container.medium:before,
-  .movie-container.low:before{
+  .movie-container.low:before {
     display: block;
   }
 
   .movie-container.high:before {
     background-color: rgba(10, 150, 10);
   }
-  
+
   .movie-container.medium:before {
     background-color: rgba(250, 180, 0);
   }
-  
+
   .movie-container.low:before {
     background-color: rgba(130, 10, 10);
   }
-
 }
