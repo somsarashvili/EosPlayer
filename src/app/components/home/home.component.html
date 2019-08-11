@@ -5,11 +5,24 @@
         <div class="overlay">
           <div class="aspect-ratio">
             <div class="content">
-              <div class="title">
-                {{ quality(item.quality).toUpperCase() }} QUALITY
-              </div>
-              <div class="play">
-                <fa-icon [icon]="faList"></fa-icon>
+              <div class="description">
+                <div class="title">
+                  {{ item.nameEng ? item.nameEng : item.nameOriginal ? item.nameOriginal : item.nameRus }}
+                </div>
+                <!-- <div class="quality">
+                  {{ quality(item.quality).toUpperCase() }} QUALITY
+                </div> -->
+                <div class="genres">
+                  <span *ngFor="let genre of item.genres">{{ 'MOVIES.GENRES.' + genre.id | translate }}</span>
+                </div>
+                <div class="details">
+                  <span class="rating">
+                    <div class="star">☆</div> {{ item.rating.toString().substr(0, 3) }}
+                  </span>
+                  <span class="year">
+                    {{ item.year }}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -17,19 +30,6 @@
         <div class="aspect-ratio">
           <div class="content img-container"
             [ngStyle]="{'background-image': 'url(' + formatUrl(item.id.toString()) + ')'}"> </div>
-        </div>
-        <div class="description">
-          <div class="title">
-            {{ item.nameEng ? item.nameEng : item.nameOriginal ? item.nameOriginal : item.nameRus }}
-          </div>
-          <div class="details">
-            <span class="rating">
-              <div class="star">☆</div> {{ item.rating.toString().substr(0, 3) }}
-            </span>
-            <span class="year">
-              {{ item.year }}
-            </span>
-          </div>
         </div>
       </div>
     </div>

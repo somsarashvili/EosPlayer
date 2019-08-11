@@ -1,5 +1,7 @@
 import { app, BrowserWindow, screen } from 'electron';
 import { EosCoreServices} from './eos/core/eos.core.services';
+import { autoUpdater } from 'electron-updater';
+import * as log from 'electron-log';
 import * as path from 'path';
 import * as url from 'url';
 
@@ -10,6 +12,11 @@ serve = args.some(val => val === '--serve');
 const eventService =  EosCoreServices.EventService.INSTANCE;
 const playerService = EosCoreServices.PlayerService.INSTANCE;
 const eosIpcService = EosCoreServices.EosIPCService.INSTANCE;
+const eosUpdaterService = EosCoreServices.UpdaterService.INSTANCE;
+
+log.transports.file.level = 'verbose';
+log.transports.console.level = 'debug';
+autoUpdater.logger = log;
 
 function createWindow() {
 

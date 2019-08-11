@@ -1,5 +1,5 @@
 {
-  "productName": "EosPlayer",
+  "productName": "Eos Player",
   "directories": {
     "output": "release/"
   },
@@ -36,5 +36,18 @@
     "target": [
       "AppImage"
     ]
+  },
+  "publish": [
+    {
+      "provider": "generic",
+      "url": "https://eos.sol.ge/Releases/"
+    }
+  ],
+  "nsis": {
+    "differentialPackage": false,
+    "runAfterFinish": false
+  },
+  "nsisWeb": {
+    "differentialPackage": false
   }
 }

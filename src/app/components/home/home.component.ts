@@ -7,7 +7,6 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { MovieDTO } from '../../api/eos/models';
 import { APIClient } from '../../api/eos';
 import { faList } from '@fortawesome/free-solid-svg-icons';
-import { LoaderService } from '../../services/loader.service';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +20,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   private sub: any;
   public keyword: string;
   private loading = false;
-  private sender = Math.random();
   private onScrollCallback;
   faList = faList;
 
@@ -30,15 +28,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(private readonly electron: ElectronService,
     private readonly api: APIClient,
     private readonly activeRoute: ActivatedRoute,
-    private readonly router: Router,
-    private readonly loader: LoaderService) {
+    private readonly router: Router) {
     this.onScrollCallback = this.onScroll.bind(this);
   }
 
 
   ngOnInit() {
     window.addEventListener('scroll', this.onScrollCallback, true);
-    this.loader.setSender(this.sender);
     this.done = false;
     this.sub = this.activeRoute.params.subscribe(params => {
       this.keyword = params['keyword'];
@@ -68,7 +64,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     const rect = el.getBoundingClientRect(),
       scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
       scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
+    return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
   }
 
   onScroll() {
@@ -83,7 +79,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     console.log(this.loading, this.done);
     if (this.loading || this.done) { return; }
     this.loading = true;
-    this.loader.emitLoading(this.sender, true);
     const requst: any = { page: this.page, perPage: this.perPage };
     if (this.keyword) {
       requst.searchKeyword = this.keyword;
@@ -95,15 +90,14 @@ export class HomeComponent implements OnInit, OnDestroy {
           'rejectUnauthorized': 'false'
         })
     }).subscribe((data) => {
+      console.log(data);
       this.loading = false;
-      this.loader.emitLoading(this.sender, false);
       if (data.movies.length === 0) {
         this.done = true;
         return;
       }
       this.movies = this.movies.concat(data.movies);
       this.page++;
-      this.loader.emitLoading(this.sender, false);
     });
   }
 

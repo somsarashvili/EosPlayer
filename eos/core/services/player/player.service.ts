@@ -23,7 +23,8 @@ export class PlayerService {
       name: '',
       downloadProgress: 0,
       downloadSpeed: 0,
-      peers: 0
+      peers: 0,
+      imageUrl: null
     };
     this.webTorrent = new WebTorrent();
     this.eventService = EosCoreServices.EventService.INSTANCE;
@@ -67,7 +68,8 @@ export class PlayerService {
       downloadSpeed: 0,
       peers: 0,
       downloadProgress: 0,
-      playing: false
+      playing: false,
+      imageUrl: null
     };
   }
 
@@ -79,7 +81,8 @@ export class PlayerService {
       downloadSpeed: 0,
       peers: 0,
       downloadProgress: 0,
-      playing: true
+      playing: true,
+      imageUrl: playRequest.imageUrl
     };
 
     return await new Promise((resolve, reject) => {
@@ -87,7 +90,7 @@ export class PlayerService {
       const port = this.generateTrandomPort();
       let fileIndex = 0;
 
-      this.webTorrent.add(playRequest.torrent, (torrentClient: any) => {
+      this.webTorrent.add(playRequest.torrent, { path: playRequest.savePath }, (torrentClient: any) => {
         this.torrent = torrentClient;
         this.torrent.deselect(0, torrentClient.pieces.length - 1, 0); // Remove default selection (whole torrent)
         // tslint:disable-next-line: forin

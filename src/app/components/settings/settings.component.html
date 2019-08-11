@@ -1,0 +1,17 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Setting</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Download Path</td>
+      <td>
+        <input [(ngModel)]="savePath" (keyup)="savePathChanged()" (change)="savePathChanged()">
+        <button (click)="pickSavePath()">Choose</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

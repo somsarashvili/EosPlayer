@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
 
@@ -27,4 +28,13 @@ body {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #333;
+}
+
+ngx-loading-bar {
+  top: 20px;
+  #loading-bar {
+    .bar {
+      top: 93px;
+    }
+  }
 }

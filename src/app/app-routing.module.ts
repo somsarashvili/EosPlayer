@@ -1,3 +1,4 @@
+import { SettingsComponent } from './components/settings/settings.component';
 import { MovieComponent } from './components/movie/movie.component';
 import { HomeComponent } from './components/home/home.component';
 import { NgModule } from '@angular/core';
@@ -15,6 +16,10 @@ const routes: Routes = [
     {
         path: 'movie/:id',
         component: MovieComponent
+    },
+    {
+        path: 'settings',
+        component: SettingsComponent
     }
 ];
 

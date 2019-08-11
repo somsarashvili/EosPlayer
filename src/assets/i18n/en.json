@@ -1,8 +1,8 @@
 {
   "PAGES": {
-      "HOME": {
-          "TITLE": "App works !"
-      }
+    "HOME": {
+      "TITLE": "App works !"
+    }
   },
   "TORRENTS": {
     "TORRENTS": "Torrents",
@@ -14,5 +14,44 @@
     "SUBTITLES": "Subtitles",
     "VOICES": "Voices",
     "SIZE": "Size"
+  },
+  "MOVIES": {
+    "YEAR":"Year",
+    "DURATION":"Duration",
+    "GENRES": {
+      "0": "Any genre",
+      "1": "Horror",
+      "2": "Sci-Fi",
+      "3": "Action",
+      "4": "Thriller",
+      "5": "Fantasy",
+      "6": "Comedy",
+      "7": "Romance",
+      "8": "Drama",
+      "9": "Musical",
+      "10": "Adventure",
+      "11": "Family",
+      "12": "Documentary",
+      "13": "Western",
+      "14": "Animation",
+      "15": "Shortie",
+      "16": "Crime",
+      "17": "Mystery",
+      "18": "Film-Noir",
+      "19": "War",
+      "20": "Porno",
+      "21": "Music",
+      "22": "Biography",
+      "23": "History",
+      "24": "Sport",
+      "25": "Reality-TV",
+      "26": "Talk-Show",
+      "27": "Game-Show",
+      "28": "News",
+      "456": "Kids",
+      "1747": "Concert",
+      "1750": "Anime",
+      "1751": "TV Special"
+    }
   }
 }

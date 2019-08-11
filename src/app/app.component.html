@@ -1,16 +1,21 @@
 <div class="searchbar">
-  <div class="pull-left logo" (click)="goHome()">Eos Player </div>
+  <div class="pull-left logo" (click)="goHome()"> Home</div>
+  <div class="pull-left logo" (click)="goBack()"> <span>‹</span> Back</div>
   <div class="pull-left search">
     <input placeholder="Movie" [formControl]="searchKeyword" (keyup.enter)="search()">
     <button (click)="search()" class="search-button">
       <fa-icon [icon]="faSearch"></fa-icon>
     </button>
   </div>
-  <div class="slider {{ isLoading ? 'loading' : ''}}">
+  <div class="settings" (click)="goToSettings()"> &#9881; </div>
+  <div class="loader">
+    <ngx-loading-bar [color]="'#555'"></ngx-loading-bar>
+  </div>
+  <!-- <div class="slider {{ isLoading ? 'loading' : ''}}">
     <div class="line"></div>
     <div class="subline inc"></div>
     <div class="subline dec"></div>
-  </div>
+  </div> -->
 </div>
 <div class="searchbar-placeholder"></div>
 <div class="{{ playerStatus.playing ? 'playing' : '' }}">
@@ -20,7 +25,7 @@
   <div class="player">
     <div class="container-fluid">
       <div class="pull-left img-container">
-        <img src="http://img2.zonapic.com/images/film_240/994/994864.jpg">
+        <img src="{{ playerStatus.imageUrl }}">
       </div>
       <div class="pull-left playing-details">
         <small>Now playing:</small><br>

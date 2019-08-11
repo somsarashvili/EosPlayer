@@ -1,3 +1,5 @@
+import { GenreDTO } from './genre-dto.model';
+
 /* tslint:disable */
 
 export interface MovieDTO {
@@ -12,4 +14,5 @@ export interface MovieDTO {
   releaseDate?: string;
   runtime?: number;
   year?: number;
+  genres?: GenreDTO[];
 }

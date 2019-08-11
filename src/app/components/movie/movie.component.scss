@@ -1,29 +1,73 @@
 h1 {
   text-align: center;
 }
-
-.description {
-  margin-top: 50px;
+.pull-left {
+  float: left;
+}
+.details {
   overflow: hidden;
+  font-size: 25px;
+  margin-bottom: 10px;
+
+  small {
+    display: block;
+    margin-top: -5px;
+    font-size: 16px;
+    color: #ccc;
+  }
+
+  .year {
+    margin-right: 10px;
+  }
+}
+.backdrop {
+  overflow: hidden;
+  background-size: cover;
+}
+.genres {
+  color: white;
+  margin-bottom: 10px;
+
+  span {
+    background: #9B1D20;
+    margin: 3px 6px 3px 0;
+    padding: 0 4px;
+    border-radius: 2px;
+    display: inline-block;
+  }
+}
+.description {
+  margin-top: 150px;
+  margin-bottom: 80px;
+  overflow: hidden;
+  padding: 0 20px;
+  width: 100%;
+  position: relative;
 
   .image {
-    width: 40%;
+    width: 500px;
     float: left;
     padding-right: 30px;
+    text-align: center;
 
-    img {
-      float: right;
+    .details {
+      width: 100%;
+      .details-widgets {
+        display: inline-block;
+      }
     }
   }
   .data {
-    width: 60%;
-    float: left;
+    width: calc(100% - 500px);
+    position: absolute;
+    left: 500px;
+    bottom: 0;
     padding-right: 50px;
   }
 }
 .torrents {
   width: 80%;
-  margin: 80px auto;
+  margin: 0 auto;
 
   hr {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -36,7 +80,7 @@ h1 {
     max-width: 100px;
   }
   table tr td:nth-of-type(8) {
-    max-width: 100px;
+    max-width: 200px;
   }
 
   .health {

@@ -1,6 +1,6 @@
 {
   "name": "EosPlayer",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "EosPlayer",
   "main": "main.js",
   "private": true,
@@ -41,6 +41,8 @@
     "@fortawesome/angular-fontawesome": "^0.4.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
     "@fortawesome/free-solid-svg-icons": "^5.9.0",
+    "@ngx-loading-bar/core": "^4.2.0",
+    "@ngx-loading-bar/router": "^4.2.0",
     "@ngx-translate/core": "11.0.1",
     "@ngx-translate/http-loader": "4.0.0",
     "@types/jasmine": "2.8.7",
@@ -82,9 +84,11 @@
     "node": ">=10.9.0"
   },
   "dependencies": {
+    "@ngx-loading-bar/http-client": "^4.2.0",
     "@types/webtorrent": "^0.98.5",
     "custom-electron-titlebar": "^3.0.10",
     "electron-log": "^3.0.6",
+    "electron-updater": "^4.1.2",
     "vlc-command": "^1.1.2",
     "webtorrent": "^0.103.4",
     "webtorrent-health": "^1.1.2",

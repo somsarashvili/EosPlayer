@@ -1,6 +1,9 @@
+import { GenreDTO } from "./genre-dto.model";
+
 /* tslint:disable */
 
 export interface MovieDetailsDTO {
+  backdropId?: number;
   audioQuality?: number;
   country?: string;
   description?: string;
@@ -15,4 +18,5 @@ export interface MovieDetailsDTO {
   releaseDate?: string;
   runtime?: number;
   year?: number;
+  genres?: GenreDTO[];
 }

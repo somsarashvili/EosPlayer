@@ -1,7 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 
 @Injectable()
-export class LoaderService {
+export class LoaderServicea {
   public loading$: EventEmitter<boolean>;
   private sender: any = '';
 

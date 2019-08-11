@@ -1,19 +1,33 @@
 <div *ngIf="movie">
-  <h1>{{ movie.nameEng ? movie.nameEng : movie.nameOriginal ? movie.nameOriginal : movie.nameRus }}</h1>
-  <div class="description">
-    <div class="image">
-      <img src="{{ formatUrl(movie.id.toString()) }}">
-    </div>
-    <div class="data">
-      <div>
-        {{ movie.year }} {{ duarationFormat(movie.runtime) }}
+  <div class="backdrop" [ngStyle]="{'background-image': backdrop()}">
+    <div class="description">
+      <div class="image">
+        <h3>{{ movie.nameEng ? movie.nameEng : movie.nameOriginal ? movie.nameOriginal : movie.nameRus }}</h3>
+        <div class="genres">
+          <span *ngFor="let genre of movie.genres">{{ 'MOVIES.GENRES.' + genre.id | translate }}</span>
+        </div>
+        <div class="details">
+          <div class="details-widgets">
+            <div class="year pull-left">
+              {{ movie.year }}<br>
+              <small>{{ 'MOVIES.YEAR' | translate }}</small>
+            </div>
+            <div class="duration pull-left">
+              {{ duarationFormat(movie.runtime) }}<br>
+              <small>{{ 'MOVIES.DURATION' | translate }}</small>
+            </div>
+          </div>
+        </div>
+        <img src="{{ formatUrl(movie.id.toString()) }}">
       </div>
-      {{ movie.descriptionEng ? movie.descriptionEng : movie.description }}
+      <div class="data">
+        {{ movie.descriptionEng ? movie.descriptionEng : movie.description }}
+      </div>
     </div>
+    <h1>{{ 'TORRENTS.TORRENTS' | translate }}</h1>
+    <br>
   </div>
   <div class="torrents">
-    <h1>{{ 'TORRENTS.TORRENTS' | translate }}</h1>
-    <hr>
     <table width="100%">
       <thead>
         <tr>
@@ -29,7 +43,10 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of torrents" (click)="checkHealth(item)">
-          <td (click)="play(item.torrent_download_link, movie.nameEng ? movie.nameEng : movie.nameOriginal ? movie.nameOriginal : movie.nameRus)"><fa-icon [icon]="faPlay"></fa-icon></td>
+          <td
+            (click)="play(item.torrent_download_link, movie.nameEng ? movie.nameEng : movie.nameOriginal ? movie.nameOriginal : movie.nameRus)">
+            <fa-icon [icon]="faPlay"></fa-icon>
+          </td>
           <td>{{ item.seeds }}/{{ item.peers }}</td>
           <td class="health health-{{ item._health ? item._health : 'unknown' }}"></td>
           <td>{{ quality(item.quality_id) }}</td>

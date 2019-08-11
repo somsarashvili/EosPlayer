@@ -1,5 +1,4 @@
 import { PlayerService } from './../../services/player.service';
-import { LoaderService } from './../../services/loader.service';
 import { ZonaAPIClient } from './../../api/zona';
 import { ZonaTorrent } from './../../api/zona/models/zona-torrent.model';
 import { Component, OnInit } from '@angular/core';
@@ -8,6 +7,7 @@ import { MovieDetailsDTO } from '../../api/eos/models';
 import { APIClient } from '../../api/eos';
 import { ElectronService } from '../../providers/electron.service';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 
 @Component({
   selector: 'app-movie',
@@ -18,21 +18,20 @@ export class MovieComponent implements OnInit {
   private sub: any;
   private id: number;
   private WebtorrentHealth;
-  private sender = Math.random();
   private readonly player: PlayerService;
+  private torrentHealthRestarted = null;
   movie: MovieDetailsDTO;
   torrents: ZonaTorrent[];
   faPlay = faPlay;
 
   private cancelTorrentHealth = function () { };
-  private torrentHealthRestarted = null;
 
   constructor(
     private readonly activeRoute: ActivatedRoute,
     private readonly electron: ElectronService,
     private readonly eosApi: APIClient,
     private readonly zonaApi: ZonaAPIClient,
-    private readonly loader: LoaderService,
+    private loadingBar: LoadingBarService,
     private readonly router: Router) {
 
     this.player = PlayerService.INSTANCE;
@@ -42,7 +41,6 @@ export class MovieComponent implements OnInit {
   ngOnInit() {
     this.sub = this.activeRoute.params.subscribe(params => {
       this.id = +params['id'];
-      this.loader.setSender(this.sender);
       this.loadData();
     });
   }
@@ -52,11 +50,9 @@ export class MovieComponent implements OnInit {
   }
 
   private loadData() {
-    this.loader.emitLoading(this.sender, true);
     this.eosApi.details({ id: this.id }).subscribe(data => {
       this.movie = data;
-
-      this.loader.emitLoading(this.sender, false);
+      console.log(data);
     });
     this.zonaApi.torrents({ id: this.id }).subscribe(data => {
       this.torrents = data.response.docs.sort((a, b) => {
@@ -70,17 +66,21 @@ export class MovieComponent implements OnInit {
   }
 
   play(torrent: string, name: string) {
-    this.player.playTorrent({ torrent: torrent, name: name });
+    this.player.playTorrent({
+      torrent: torrent,
+      name: name,
+      imageUrl: this.formatUrl(this.id.toString()),
+      savePath: localStorage.getItem('savePath')
+    });
   }
 
   duarationFormat(duration: number) {
     const date = new Date(duration * 60000);
-    return `${date.getUTCHours()}:${date.getUTCMinutes()}`;
+    const minutes = date.getUTCMinutes();
+    return `${date.getUTCHours()}:${minutes < 10 ? '0' : ''}${minutes}`;
   }
 
   async checkHealth(torrent: ZonaTorrent) {
-    this.loader.emitLoading(this.sender, true);
-
     this.cancelTorrentHealth();
 
     // Use fancy coding to cancel
@@ -89,16 +89,22 @@ export class MovieComponent implements OnInit {
     this.cancelTorrentHealth = function () {
       cancelled = true;
     };
+    this.loadingBar.start();
     try {
       const result = await new Promise<any>((resolve, reject) => {
-
+        const timeout = setTimeout(() => {
+          this.loadingBar.stop();
+          this.cancelTorrentHealth();
+        }, 10000);
         this.WebtorrentHealth(torrent.torrent_download_link, {
-          timeout: 1000,
           trackers: window.Common.trackers
         }, (err, res) => {
+          console.log('checking', cancelled, err);
           if (cancelled || err) {
             console.log(cancelled, err);
+            clearTimeout(timeout);
             reject(err);
+            this.loadingBar.complete();
           }
           if (res.seeds === 0 && this.torrentHealthRestarted < 5) {
             this.torrentHealthRestarted++;
@@ -111,21 +117,21 @@ export class MovieComponent implements OnInit {
             const health = window.Common.healthMap[h];
             const ratio = res.peers > 0 ? res.seeds / res.peers : +res.seeds;
             console.log('resolving');
+            clearTimeout(timeout);
             resolve({
               health: health,
               seeds: res.seeds,
               peers: res.peers
             });
+            this.loadingBar.complete();
           }
         });
       });
       torrent.seeds = result.seeds;
       torrent.peers = result.peers;
       torrent._health = result.health;
-      this.loader.emitLoading(this.sender, false);
     } catch (e) {
       console.error(e);
-      this.loader.emitLoading(this.sender, false);
     }
   }
 
@@ -137,6 +143,24 @@ export class MovieComponent implements OnInit {
     }
 
     return `http://img2.zonapic.com/images/film\_240/${sub}/${id}.jpg`;
+  }
+
+  backdrop() {
+    if (this.movie.backdropId == null) {
+      return `linear-gradient(rgba(30, 37, 43, 0.3), #1e252b),
+          url(https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/vfPFP3W/movie-theater-film-reel-background-in-seamless-loop_xk6ivnb9__F0000.png)`;
+    }
+
+    const id = this.movie.backdropId.toString();
+    let sub = id.substr(0, id.length - 3);
+
+    if (sub === '') {
+      sub = '0';
+    }
+
+    return `linear-gradient(rgba(30, 37, 43, 0.3), #1e252b),
+     url(http://img4.zonapic.com/images/backdrop_1920/${sub}/${id}.jpg),
+      url(https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/vfPFP3W/movie-theater-film-reel-background-in-seamless-loop_xk6ivnb9__F0000.png)`;
   }
 
   quality(quality: number) {

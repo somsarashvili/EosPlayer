@@ -4,110 +4,106 @@
   flex: 1 1 0;
   min-width: 190px;
   max-width: 380px;
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 5px;
+  padding-left: 5px;
 
   .movie-container {
     margin-top: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 0;
     border-radius: 5px;
     background-color: rgb(21, 26, 30);
     position: relative;
     cursor: pointer;
 
     .aspect-ratio {
-      @include aspect-ratio(16, 24);
+      @include aspect-ratio(15, 22);
 
       .img-container {
         width: 100%;
         background-size: cover;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
+        border-radius: 5px;
       }
     }
-
-    .description {
-      padding: 10px;
-      font-size: 14px;
-
-      .title {
-        height: 67px;
-      }
-
-      .details {
-        font-size: 12px;
-
-        .rating {
-          color: orange;
-          margin-right: 3px;
-
-          .star {
-            float: left;
-            font-size: 16px;
-            margin-top: -4px;
-            margin-right: 2px;
-          }
-        }
-
-        .year {
-          color: gray;
-        }
-      }
-    }
-
     .overlay {
       display: none;
       position: absolute;
+      border-radius: 5px;
       top: 0;
       left: 0;
       z-index: 1;
       width: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
+      background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9));
 
-      .title {
-        margin-top: 30px;
-        font-size: 11px;
-        text-align: center;
-        font-weight: bold;
-      }
+      .content {
+        position: absolute;
+        top: auto;
+        bottom: 10px;
 
-      .play {
-        color: white;
-        font-size: 45px;
-        margin: 0 auto;
-        width: 90px;
-        height: 90px;
-        border: 1px solid white;
-        text-align: center;
-        border-radius: 45px;
-        position: relative;
-        margin-top: 50px;
-        cursor: pointer;
+        .genres {
+          padding: 0 10px;
+          color: white;
 
-        fa-icon {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
+          span {
+            background: #9B1D20;
+            margin: 3px;
+            padding: 0 4px;
+            border-radius: 2px;
+            display: inline-block;
+          }
+        }
+
+        .description {
+          text-align: center;
+          z-index: 10;
+          font-size: 14px;
+          width: 100%;
+
+          .title {
+            width: 100%;
+            left: 0;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 0 5px;
+            color: white;
+          }
+
+          .details {
+            font-size: 12px;
+
+            .rating {
+              color: orange;
+              margin-right: 3px;
+
+              .star {
+                display: inline-block;
+                font-size: 16px;
+                margin-top: -4px;
+                margin-right: 2px;
+              }
+            }
+
+            .year {
+              color: gray;
+            }
+          }
+        }
+
+        .quality {
+          font-size: 11px;
+          text-align: center;
+          font-weight: bold;
         }
       }
     }
   }
 
   .movie-container:hover {
-    .overlay {
+    .description {
       display: block;
-
-      .play:hover {
-        color: blue;
-        background-color: white;
-      }
     }
 
-    .description {
-      .title {
-        color: rgb(0, 148, 246);
-      }
+    .overlay {
+      display: block;
     }
   }
 

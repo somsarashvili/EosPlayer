@@ -7,11 +7,12 @@ import { AppConfig } from '../environments/environment';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { LoaderService } from './services/loader.service';
 import { BrowserWindow } from 'electron';
 import { Observable, interval } from 'rxjs';
 import { Titlebar, Color } from 'custom-electron-titlebar';
 import { EosShared } from '../../eos/eos.shared';
+import { Location } from '@angular/common';
+
 declare global {
   interface Window {
     Common: typeof Common;
@@ -32,19 +33,25 @@ export class AppComponent {
   faTimes = faTimes;
   isMaximized: boolean;
   isLoading = true;
-  playerStatus: EosShared.Models.PlayerModel
+  playerStatus: EosShared.Models.PlayerModel;
 
   constructor(public electronService: ElectronService,
     private translate: TranslateService,
-    private router: Router,
-    private readonly loader: LoaderService) {
+    private location: Location,
+    private router: Router) {
     this.playerStatus = {
       name: '',
       downloadProgress: 0,
       downloadSpeed: 0,
       peers: 0,
-      playing: false
+      playing: false,
+      imageUrl: null
+    };
+
+    if (localStorage.getItem('savePath') == null) {
+      localStorage.setItem('savePath', electronService.app.getPath('documents') + '\\Eos');
     }
+
     new Titlebar({
       backgroundColor: Color.fromHex('#394146'),
       icon: './favicon.png',
@@ -68,7 +75,6 @@ export class AppComponent {
       console.log('Mode web');
     }
     window.Common = Common;
-    loader.loading$.subscribe(item => this.isLoading = item);
 
     interval(500).subscribe(async () => {
       this.playerStatus = (await this.playerService.getPlayerStatus()).result;
@@ -77,11 +83,20 @@ export class AppComponent {
 
   search() {
     this.router.navigate(['/search', this.searchKeyword.value]);
-    console.log(this.searchKeyword.value);
   }
 
   goHome() {
     this.router.navigate(['/']);
+  }
+
+  goBack() {
+    if (!this.location.isCurrentPathEqualTo('/')) {
+      this.location.back();
+    }
+  }
+
+  goToSettings() {
+    this.router.navigate(['/settings']);
   }
 
   progress(prc: number) {
