@@ -27,6 +27,7 @@ function createWindow() {
   win = new BrowserWindow({
     x: 0,
     y: 0,
+    icon: path.join(__dirname, 'dist/favicon.png'),
     width: size.width,
     height: size.height,
     webPreferences: {

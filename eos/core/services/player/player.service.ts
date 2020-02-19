@@ -129,7 +129,7 @@ export class PlayerService {
               this.eventService.sendEvent(EosShared.EosEvent.PLAYER_CLOSED, true);
             });
           } else {
-            child_process.exec(cmd + ' --version', function (err, stdout) {
+            child_process.exec(cmd + ' --fullscreen ' + url, function (err, stdout) {
               if (err) return console.error(err);
               console.log(stdout);
             });

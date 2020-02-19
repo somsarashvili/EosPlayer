@@ -45,7 +45,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   imports: [
     APIClientModule.forRoot({
-      domain: 'http://eos.sol.ge', // or use value defined in environment `environment.apiUrl`
+      domain: 'https://eos.sol.ge', // or use value defined in environment `environment.apiUrl`
     }),
     ZonaAPIClientModule.forRoot({
       domain: 'http://zsolr3.zonasearch.com/solr/torrent/select/'

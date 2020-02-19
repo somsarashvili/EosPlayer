@@ -1,6 +1,6 @@
 {
   "name": "EosPlayer",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "EosPlayer",
   "main": "main.js",
   "private": true,
@@ -89,6 +89,7 @@
     "custom-electron-titlebar": "^3.0.10",
     "electron-log": "^3.0.6",
     "electron-updater": "^4.1.2",
+    "fluent-ffmpeg": "^2.1.2",
     "vlc-command": "^1.1.2",
     "webtorrent": "^0.103.4",
     "webtorrent-health": "^1.1.2",
