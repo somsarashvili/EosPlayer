@@ -38,10 +38,7 @@
     ]
   },
   "publish": [
-    {
-      "provider": "generic",
-      "url": "https://eos.sol.ge/Releases/"
-    }
+    "github"
   ],
   "nsis": {
     "differentialPackage": false,
