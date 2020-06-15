@@ -4,6 +4,7 @@ import { autoUpdater } from 'electron-updater';
 import * as log from 'electron-log';
 import * as path from 'path';
 import * as url from 'url';
+const pjson = require('./package.json');
 
 let win: BrowserWindow;
 let serve;
@@ -19,7 +20,7 @@ log.transports.console.level = 'debug';
 autoUpdater.logger = log;
 
 function createWindow() {
-
+  process.env.APP_VER = pjson.version;
   const electronScreen = screen;
   const size = electronScreen.getPrimaryDisplay().workAreaSize;
 
@@ -52,8 +53,8 @@ function createWindow() {
   }
   win.setMenu(null);
 
+  win.webContents.openDevTools();
   if (serve) {
-    win.webContents.openDevTools();
   }
 
   // Emitted when the window is closed.
