@@ -1,6 +1,6 @@
 {
   "name": "EosPlayer",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "EosPlayer",
   "main": "main.js",
   "private": true,
