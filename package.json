@@ -11,9 +11,10 @@
     "postinstall:electron": "node postinstall",
     "ng": "ng",
     "start": "npm run postinstall:electron && npm-run-all -p ng:serve electron:serve",
-    "build": "npm run postinstall:electron && npm run electron:serve-tsc && ng build",
-    "build:dev": "npm run build -- -c dev",
-    "build:prod": "npm run build -- -c production",
+    "prebuild": "npm run postinstall:electron && npm run electron:serve-tsc && ng build",
+    "build": "npm run build:prod && electron-builder build --windows",
+    "build:dev": "npm run prebuild -- -c dev",
+    "build:prod": "npm run prebuild -- -c production",
     "ng:serve": "ng serve",
     "ng:serve:web": "npm run postinstall:web && ng serve -o",
     "electron:serve-tsc": "tsc -p tsconfig-serve.json",
@@ -86,13 +87,13 @@
   "dependencies": {
     "@ngx-loading-bar/http-client": "^4.2.0",
     "@types/webtorrent": "^0.98.5",
-    "custom-electron-titlebar": "^3.0.10",
+    "custom-electron-titlebar": "3.0.10",
     "electron-log": "^3.0.6",
-    "electron-updater": "^4.1.2",
+    "electron-updater": "4.1.2",
     "fluent-ffmpeg": "^2.1.2",
     "vlc-command": "^1.1.2",
-    "webtorrent": "^0.103.4",
-    "webtorrent-health": "^1.1.2",
-    "webtorrent-hybrid": "^2.1.1"
+    "webtorrent": "0.103.4",
+    "webtorrent-health": "1.1.2",
+    "webtorrent-hybrid": "2.1.1"
   }
 }
