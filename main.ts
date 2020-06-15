@@ -53,8 +53,8 @@ function createWindow() {
   }
   win.setMenu(null);
 
-  win.webContents.openDevTools();
   if (serve) {
+    win.webContents.openDevTools();
   }
 
   // Emitted when the window is closed.

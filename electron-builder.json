@@ -41,10 +41,6 @@
     "github"
   ],
   "nsis": {
-    "differentialPackage": false,
     "runAfterFinish": false
-  },
-  "nsisWeb": {
-    "differentialPackage": false
   }
 }
