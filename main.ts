@@ -19,6 +19,17 @@ log.transports.file.level = 'verbose';
 log.transports.console.level = 'debug';
 autoUpdater.logger = log;
 
+process.on('uncaughtException', function (error) {
+  // tslint:disable-next-line: no-console
+  console.trace(error);
+  log.error('uncaughtException', error, error.stack);
+});
+process.on('unhandledRejection', function (error) {
+  // tslint:disable-next-line: no-console
+  console.trace(error);
+  log.error('unhandledRejection', error);
+});
+
 function createWindow() {
   process.env.APP_VER = pjson.version;
   const electronScreen = screen;
