@@ -1,11 +1,12 @@
 import { EventService } from './../../core/services/event/event.service';
-import { App, app, protocol, ipcMain } from 'electron';
+import { App, app, ipcMain } from 'electron';
 import log from 'electron-log';
 import { WindowManager } from './window.manager';
 import { EosDIContainer, EosDIControllerBinder } from '../../core/infrastructure/dependency-injection';
 import { appStartTime } from '../main';
 import { RegisterControllers, RegisterRoutes } from '../router';
 import { BootCore } from '../../core/boot';
+import { ElectronUpdaterService } from '../services/updater/updater.service';
 
 export class ElectronApp {
   private app: App;
@@ -21,6 +22,7 @@ export class ElectronApp {
 
     process.env.APP_VER = this.app.getVersion();
     EosDIContainer.bind(WindowManager).toSelf().inSingletonScope();
+    EosDIContainer.bind(ElectronUpdaterService).toSelf().inSingletonScope();
 
     this.windowManager = EosDIContainer.get(WindowManager);
   }
@@ -50,6 +52,7 @@ export class ElectronApp {
     });
 
     await this.windowManager.ShowMainWindow();
+    await EosDIContainer.get(ElectronUpdaterService).Run();
 
     log.log('App Boot Time: ', (new Date().getTime() - appStartTime) / 1000);
   }
