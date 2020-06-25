@@ -1,0 +1,51 @@
+/* tslint:disable */
+/* eslint-disable */
+// ipc //
+{{#each controllers}}
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { {{name}} } from './{{location}}';
+{{/each}}
+import { Socket } from 'socket.io';
+import * as log from 'electron-log';
+
+export function RegisterControllers(DICallback: Function) {    
+    {{#each controllers}}
+    DICallback({{name}});
+    {{/each}}   
+}
+
+
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+export function RegisterRoutes(socket: Socket, DIContainer: any) {
+    // ###########################################################################################################
+    //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
+    //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
+    // ###########################################################################################################
+    {{#each controllers}}
+    {{#each methods}}
+        
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        socket.on('{{path}}', async (rawMessage) => {
+            const message = JSON.parse(rawMessage);
+            console.log('ipc receive', '{{path}}');
+            const controller = DIContainer.get({{../name}});
+
+            try {                
+                socket.emit(
+                    `{{path}}.result/${message.callerId}`,
+                    await controller.{{name}}.apply(controller, [message.data as any])
+                );
+            } catch(err) {
+                console.error('err', err);
+                err = JSON.parse(JSON.stringify(err));
+                if (err.name && err.name.includes('.')) {
+                    const nameArr = err.name.split('.');
+                    err.name = nameArr[nameArr.length - 1];
+                }
+                socket.emit(`{{path}}.result/${message.callerId}`, { err });
+            }
+        });
+    {{/each}}
+    {{/each}}
+}

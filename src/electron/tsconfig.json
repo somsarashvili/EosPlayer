@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "outDir": "../../app",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "typeRoots": [
+      "../../node_modules/@types"
+    ],
+    "types": [
+      "reflect-metadata"
+    ],
+    "lib": [
+      "es2017",
+      "es2016",
+      "es2015",
+      "dom"
+    ]
+  },
+  "include": [
+    "main.ts",
+    "**/*.ts",
+    "**/*.json",
+    "../core/**/*.ts",
+    "../core/**/*.json",
+  ],
+  "exclude": [
+    "../../node_modules",
+    "**/*.spec.ts"
+  ]
+}

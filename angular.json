@@ -5,33 +5,41 @@
   "projects": {
     "angular-electron": {
       "root": "",
-      "sourceRoot": "src",
+      "sourceRoot": "src/angular",
       "projectType": "application",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "tsConfig": "src/tsconfig.app.json",
-            "polyfills": "src/polyfills.ts",
+            "aot": true,
+            "outputPath": "app/web",
+            "index": "src/angular/index.html",
+            "main": "src/angular/main.ts",
+            "tsConfig": "src/angular/tsconfig.app.json",
+            "polyfills": "src/angular/polyfills.ts",
             "assets": [
-              "src/assets",
-              "src/favicon.ico",
-              "src/favicon.png",
-              "src/favicon.icns",
-              "src/favicon.256x256.png",
-              "src/favicon.512x512.png"
+              "src/angular/assets",
+              "src/angular/favicon.ico",
+              "src/angular/favicon.png",
+              "src/angular/favicon.icns",
+              "src/angular/favicon.256x256.png",
+              "src/angular/favicon.512x512.png",
+              "src/angular/splashScreen.html"
             ],
             "styles": [
-              "src/styles.scss",
+              "src/angular/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "scripts": []
           },
           "configurations": {
             "dev": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "optimization": false,
               "outputHashing": "all",
               "sourceMap": true,
@@ -43,12 +51,18 @@
               "buildOptimizer": false,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.dev.ts"
+                  "replace": "src/angular/environments/environment.ts",
+                  "with": "src/angular/environments/environment.dev.ts"
                 }
               ]
             },
             "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -60,8 +74,8 @@
               "buildOptimizer": true,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "src/angular/environments/environment.ts",
+                  "with": "src/angular/environments/environment.prod.ts"
                 }
               ]
             }
@@ -90,21 +104,22 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills-test.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
+            "main": "src/angular/test.ts",
+            "polyfills": "src/angular/polyfills-test.ts",
+            "tsConfig": "src/angular/tsconfig.spec.json",
+            "karmaConfig": "src/angular/karma.conf.js",
             "scripts": [],
             "styles": [
-              "src/styles.scss"
+              "src/angular/styles.scss"
             ],
             "assets": [
-              "src/assets",
-              "src/favicon.ico",
-              "src/favicon.png",
-              "src/favicon.icns",
-              "src/favicon.256x256.png",
-              "src/favicon.512x512.png"
+              "src/angular/assets",
+              "src/angular/favicon.ico",
+              "src/angular/favicon.png",
+              "src/angular/favicon.icns",
+              "src/angular/favicon.256x256.png",
+              "src/angular/favicon.512x512.png",
+              "src/angular/splashScreen.html"
             ]
           }
         },
@@ -112,8 +127,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
+              "src/angular/tsconfig.app.json",
+              "src/angular/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -144,10 +159,13 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
-      "styleext": "scss"
+      "style": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "app"
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

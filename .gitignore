@@ -2,15 +2,23 @@
 
 # compiled output
 /dist
+/app
 /tmp
 /out-tsc
 /app-builds
 /release
 main.js
-eos/**/*.js
 src/**/*.js
+services/*.js
+services/**/*.js
+shared/*.js
+shared/**/*.js
 !src/karma.conf.js
 *.js.map
+!src/angular/assets/MainProcessAPI.js
+!src/angular/assets/socket.io.js
+src/electron/routes/Router.ts
+src/socket-io/Router.ts
 
 # dependencies
 /node_modules
@@ -49,3 +57,6 @@ package-lock.json
 # System Files
 .DS_Store
 Thumbs.db
+*.docXml
+*.sqlite
+archive.js
