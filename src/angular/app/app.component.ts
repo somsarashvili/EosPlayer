@@ -13,7 +13,7 @@ import { MainProcessService } from './services/main-process/main-process.service
 
 declare global {
   interface Window {
-    Common: typeof Common;    
+    Common: typeof Common;
     MainProcessAPI: MainProcessAPI;
   }
 }
@@ -45,9 +45,9 @@ export class AppComponent {
       imageUrl: null
     };
 
-    // if (localStorage.getItem('savePath') == null) {
-    //   localStorage.setItem('savePath', electronService.app.getPath('documents') + '\\Eos');
-    // }
+    if (localStorage.getItem('savePath') == null) {
+      localStorage.setItem('savePath', mainProcessService.defaultDownloadPath);
+    }
 
     window.MainProcessAPI.setTitleBar();
 

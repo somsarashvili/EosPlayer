@@ -1,0 +1,46 @@
+{
+  "productName": "Eos Player",
+  "directories": {
+    "output": "release/"
+  },
+    "files": [
+        "**/*",
+        "!**/*.ts",
+        "!*.code-workspace",
+        "!LICENSE.md",
+        "!package.json",
+        "!package-lock.json",
+        "!src/",
+        "!e2e/",
+        "!hooks/",
+        "!angular.json",
+        "!_config.yml",
+        "!karma.conf.js",
+        "!tsconfig.json",
+        "!tslint.json"
+    ],
+  "win": {
+    "icon": "app/web",
+    "target": [
+      "nsis"
+    ]
+  },
+  "mac": {
+    "icon": "app/web",
+    "target": [
+      "dmg", "zip"
+    ]
+  },
+  "linux": {
+    "icon": "app/web",
+    "target": [
+      "AppImage"
+    ]
+  },
+  "publish": [
+    "github"
+  ],
+  "nsis": {
+    "runAfterFinish": false
+  }
+}

@@ -60,7 +60,6 @@ export class WindowManager {
     }
 
     if (process.env.SERVE) {
-      console.log('process.env.SERVE', process.env.SERVE);
       this.mainWindow.webContents.openDevTools();
     }
 

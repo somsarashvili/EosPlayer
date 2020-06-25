@@ -44,6 +44,11 @@ const { Titlebar, Color } = require('custom-electron-titlebar');
       document.body.classList.add('with-titlebar');
     }
   }
+  async function showOpenDialog() {
+    return (await remote.dialog.showOpenDialog({
+      properties: ['openDirectory']
+    })).filePaths[0];
+  }
 
   function getWebTorrentHealthModule() {
     return require('webtorrent-health');
@@ -52,6 +57,7 @@ const { Titlebar, Color } = require('custom-electron-titlebar');
   contextBridge.exposeInMainWorld(
     'MainProcessAPI',
     {
+      defaultDownloadPath: remote.app.getPath('documents') + '\\Eos',
       on,
       once,
       send,
@@ -62,7 +68,8 @@ const { Titlebar, Color } = require('custom-electron-titlebar');
       relaunch,
       getEnvironment,
       setTitleBar,
-      getWebTorrentHealthModule
+      getWebTorrentHealthModule,
+      showOpenDialog
     }
   );
 })();

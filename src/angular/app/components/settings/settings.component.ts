@@ -1,3 +1,4 @@
+import { MainProcessService } from './../../services/main-process/main-process.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -8,28 +9,23 @@ import { Component, OnInit } from '@angular/core';
 export class SettingsComponent implements OnInit {
   public savePath: string;
 
-  constructor() { }
+  constructor(
+    private readonly mainProcess: MainProcessService
+  ) { }
 
   ngOnInit() {
     this.savePath = localStorage.getItem('savePath');
   }
 
-  pickSavePath() {
-    const paths = this.showOpenDialog();
+  async pickSavePath() {
+    const paths = await this.mainProcess.showOpenDialog();
     if (paths != null) {
-      this.savePath = paths[0];
+      this.savePath = paths;
       this.savePathChanged();
     }
   }
 
   savePathChanged() {
     localStorage.setItem('savePath', this.savePath);
-  }
-
-  showOpenDialog() {
-    alert('not implemented');
-    // return this.electronService.dialog.showOpenDialog({
-    //   properties: ['openDirectory']
-    // });
   }
 }

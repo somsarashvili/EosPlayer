@@ -9,23 +9,23 @@ import { PlayerModel } from '../../../../shared/types/PlayerModel';
 
 @Injectable()
 export class MainProcessService {
-  private ipcRenderer: MainProcessAPI;
+  private mainProcessAPI: MainProcessAPI;
   private callerId: string;
 
   constructor() {
-    this.ipcRenderer = window.MainProcessAPI;
+    this.mainProcessAPI = window.MainProcessAPI;
     this.callerId = CommonFunctions.generateGuid();
-    this.ipcRenderer.send('event.subscribe', this.callerId);
+    this.mainProcessAPI.send('event.subscribe', this.callerId);
   }
 
   on(event: string, callback: Function) {
-    this.ipcRenderer.on(`${event}/${this.callerId}`, (_, data) => {
+    this.mainProcessAPI.on(`${event}/${this.callerId}`, (_, data) => {
       callback(data);
     });
   }
 
   once(event: string, callback: Function) {
-    this.ipcRenderer.once(`${event}/${this.callerId}`, (_, data) => {
+    this.mainProcessAPI.once(`${event}/${this.callerId}`, (_, data) => {
       callback(data);
     });
   }
@@ -47,19 +47,26 @@ export class MainProcessService {
   }
 
   getWebTorrentHealthModule() {
-    return this.ipcRenderer.getWebTorrentHealthModule();
+    return this.mainProcessAPI.getWebTorrentHealthModule();
   }
 
+  get defaultDownloadPath() {
+    return this.mainProcessAPI.defaultDownloadPath;
+  }
+
+  public async showOpenDialog() {
+    return await this.mainProcessAPI.showOpenDialog();
+  }
 
   private async ipcSend<T extends IResult<any>>(event: string, payload?): Promise<T> {
     return await new Promise<T>((resolve, reject) => {
-      this.ipcRenderer.once(
+      this.mainProcessAPI.once(
         `${event}.result/${this.callerId}`,
         (_, result: T) => {
           resolve(result);
         }
       );
-      this.ipcRenderer.send(event, this.callerId, payload);
+      this.mainProcessAPI.send(event, this.callerId, payload);
     });
   }
 }

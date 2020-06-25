@@ -1,4 +1,5 @@
 export interface MainProcessAPI {
+  defaultDownloadPath: string;
   on(channel: string, listener: (event: any, ...args: any[]) => void): this;
   once(channel: string, listener: (event: any, ...args: any[]) => void): this;
   send(channel: string, ...args: any[]): void;
@@ -10,4 +11,5 @@ export interface MainProcessAPI {
   getEnvironment(): string;
   setTitleBar(): boolean;
   getWebTorrentHealthModule();
+  showOpenDialog(): Promise<string>;
 }
