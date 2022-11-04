@@ -52,9 +52,9 @@
     "@types/node": "^12.11.1",
     "bootstrap": "^4.5.0",
     "codelyzer": "^5.1.2",
-    "electron": "^9.0.4",
-    "electron-builder": "^22.7.0",
-    "electron-reload": "^1.5.0",
+    "electron": "9.0.4",
+    "electron-builder": "22.7.0",
+    "electron-reload": "1.5.0",
     "handlebars": "^4.7.6",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
@@ -76,13 +76,13 @@
     "zone.js": "~0.10.2"
   },
   "dependencies": {
-    "custom-electron-titlebar": "^3.2.2-hotfix62",
-    "electron-log": "^4.2.2",
-    "electron-updater": "^4.3.1",
-    "inversify": "^5.0.1",
-    "reflect-metadata": "^0.1.13",
-    "v8-compile-cache": "^2.1.1",
-    "webtorrent-health": "^1.1.2",
-    "webtorrent-hybrid": "^4.0.1"
+    "custom-electron-titlebar": "3.2.2-hotfix62",
+    "electron-log": "4.2.2",
+    "electron-updater": "4.3.1",
+    "inversify": "5.0.1",
+    "reflect-metadata": "0.1.13",
+    "v8-compile-cache": "2.1.1",
+    "webtorrent-health": "1.1.2",
+    "webtorrent-hybrid": "4.0.1"
   }
 }

@@ -34,16 +34,29 @@ export class WindowManager {
         contextIsolation: true, // protect against prototype pollution
         enableRemoteModule: true, // turn off remote
         preload: __dirname + '/preloader.js',
-        webSecurity: false,
+        webSecurity: false
       },
       icon: Constants.WebPath + '/favicon.png',
     });
     this.mainWindow.hide();
+    this.mainWindow.webContents.session.webRequest.onBeforeSendHeaders(
+      (details, callback) => {
+        callback({ requestHeaders: { Origin: '*', ...details.requestHeaders } });
+      },
+    );
+    this.mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+      callback({
+        responseHeaders: {
+          'Access-Control-Allow-Origin': ['*'],
+          ...details.responseHeaders,
+        },
+      });
+    });
     if (process.env.SERVE) {
       require('electron-reload')(__dirname, {
         electron: require(process.cwd() + '/node_modules/electron'),
       });
-      this.mainWindow.loadURL('http://localhost:4200', {
+      this.mainWindow.loadURL('http://zsolr3.zonasearch.com', {
         userAgent: Constants.UserAgent,
       });
     } else {

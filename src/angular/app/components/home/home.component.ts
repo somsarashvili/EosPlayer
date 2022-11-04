@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { MovieDTO } from '../../api/eos/models';
-import { APIClient } from '../../api/eos';
+import { ZonaAPIClient } from '../../api/zona';
 import { faList } from '@fortawesome/free-solid-svg-icons';
+import { ZonaListItem } from '../../api/zona/models';
 
 @Component({
   selector: 'app-home',
@@ -20,10 +20,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   private onScrollCallback;
   faList = faList;
 
-  movies: MovieDTO[] = [];
+  movies: ZonaListItem[] = [];
 
   constructor(
-    private readonly api: APIClient,
+    private readonly api: ZonaAPIClient,
     private readonly activeRoute: ActivatedRoute,
     private readonly router: Router) {
     this.onScrollCallback = this.onScroll.bind(this);
@@ -89,11 +89,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     }).subscribe((data) => {
       console.log(data);
       this.loading = false;
-      if (data.movies.length === 0) {
+      if (data.response.docs.length === 0) {
         this.done = true;
         return;
       }
-      this.movies = this.movies.concat(data.movies);
+      this.movies = this.movies.concat(data.response.docs);
       this.page++;
     });
   }

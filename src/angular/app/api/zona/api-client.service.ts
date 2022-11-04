@@ -39,10 +39,41 @@ export class ZonaAPIClient implements ZonaAPIClientInterface {
       ...(options && options.withCredentials ? { withCredentials: options.withCredentials } : {})
     };
   }
+  list(args: { page: number; perPage: number; searchKeyword?: string; }, requestHttpOptions?: ZonaHttpOptions): Observable<models.ZonaResult<models.ZonaListItem[]>> {
 
-  torrents(args: { id: number; }, requestHttpOptions?: ZonaHttpOptions): Observable<models.ZonaResult<models.ZonaTorrent[]>> {
+    const path = '/solr/movie/select/';
+    const options: ZonaAPIHttpOptions = { ...this.options, ...requestHttpOptions };
 
-    const path = ``;
+    const searchQuery = args.searchKeyword && args.searchKeyword != '' ? `(name_original:(${args.searchKeyword}) OR name_rus_search:(${args.searchKeyword}))AND((languages:en OR languages:null)^0.01)AND` : '';
+    const searchSort = args.searchKeyword && args.searchKeyword != '' ? 'score desc,' : '';
+
+    options.params = options.params.set('q', `(${searchQuery}(serial:false)NOT(genreId:(12 OR 15 OR 25 OR 26 OR 1747 OR 28 OR 27 OR tv)))`);
+    options.params = options.params.set('fl', 'id,year,playable,trailer,quality,audio_quality,type3d,serial,languages_imdb,rating,genre2,runtime,episodes,tor_count,serial_end_year,serial_ended,abuse,release_date_int,release_date_rus,indexed,geo_rules,partner_entity_id,partner_type,name_rus,name_ukr,name_eng,name_original');
+    options.params = options.params.set('version', '2.2');
+    options.params = options.params.set('start', ((args.page - 1) * args.perPage).toString());
+    options.params = options.params.set('rows', args.perPage.toString());
+    options.params = options.params.set('wt', 'json');
+    options.params = options.params.set('sort', `${searchSort}popularity desc,seeds desc,id desc`)
+
+    return this.sendRequest<models.ZonaResult<models.ZonaListItem[]>>('GET', path, options);
+  }
+  details(args: { id?: string; }, requestHttpOptions?: ZonaHttpOptions): Observable<models.ZonaResult<models.ZonaDetails[]>> {
+ 
+    const path = '/solr/movie/select/';
+    const options: ZonaAPIHttpOptions = { ...this.options, ...requestHttpOptions };
+
+    options.params = options.params.set('q', `((id:${args.id}))`);
+    options.params = options.params.set('version', '2.2');
+    options.params = options.params.set('start', '0');
+    options.params = options.params.set('rows', '1');
+    options.params = options.params.set('wt', 'json');
+
+    return this.sendRequest<models.ZonaResult<models.ZonaDetails[]>>('GET', path, options);
+  }
+
+  torrents(args: { id: string; }, requestHttpOptions?: ZonaHttpOptions): Observable<models.ZonaResult<models.ZonaTorrent[]>> {
+
+    const path = '/solr/torrent/select/';
     const options: ZonaAPIHttpOptions = { ...this.options, ...requestHttpOptions };
 
     options.params = options.params.set('q', `((kinopoisk_id:${args.id})AND(deleted:false))AND(indexed%3A[1+TO+8])`);

@@ -24,7 +24,6 @@ import { WebviewDirective } from './directives/webview.directive';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { MovieComponent } from './components/movie/movie.component';
-import { APIClientModule } from './api/eos';
 import { SettingsComponent } from './components/settings/settings.component';
 
 // AoT requires an exported function for factories
@@ -41,11 +40,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SettingsComponent
   ],
   imports: [
-    APIClientModule.forRoot({
-      domain: 'https://eos.sol.ge', // or use value defined in environment `environment.apiUrl`
-    }),
     ZonaAPIClientModule.forRoot({
-      domain: 'http://zsolr3.zonasearch.com/solr/torrent/select/'
+      domain: 'http://zsolr3.zonasearch.com'
     }),
     LoadingBarHttpClientModule,
     LoadingBarRouterModule,

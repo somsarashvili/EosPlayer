@@ -7,13 +7,13 @@
             <div class="content">
               <div class="description">
                 <div class="title">
-                  {{ item.nameEng ? item.nameEng : item.nameOriginal ? item.nameOriginal : item.nameRus }}
+                  {{ item.name_eng ? item.name_eng : item.name_original ? item.name_original : item.name_rus }}
                 </div>
                 <!-- <div class="quality">
                   {{ quality(item.quality).toUpperCase() }} QUALITY
                 </div> -->
                 <div class="genres">
-                  <span *ngFor="let genre of item.genres">{{ 'MOVIES.GENRES.' + genre.id | translate }}</span>
+                  <span *ngFor="let genre of item.genre2.split(' ')">{{ 'MOVIES.GENRES.' + genre | translate }}</span>
                 </div>
                 <div class="details">
                   <span class="rating">

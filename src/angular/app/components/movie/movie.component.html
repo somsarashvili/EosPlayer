@@ -4,7 +4,7 @@
       <div class="image">
         <h3>{{ movie.nameEng ? movie.nameEng : movie.nameOriginal ? movie.nameOriginal : movie.nameRus }}</h3>
         <div class="genres">
-          <span *ngFor="let genre of movie.genres">{{ 'MOVIES.GENRES.' + genre.id | translate }}</span>
+          <span *ngFor="let genre of movie.genre2.split(' ')">{{ 'MOVIES.GENRES.' + genre | translate }}</span>
         </div>
         <div class="details">
           <div class="details-widgets">
@@ -21,7 +21,7 @@
         <img src="{{ formatUrl(movie.id.toString()) }}">
       </div>
       <div class="data">
-        {{ movie.descriptionEng ? movie.descriptionEng : movie.description }}
+        {{ movie.description_eng ? movie.description_eng : movie.description }}
       </div>
     </div>
     <h1>{{ 'TORRENTS.TORRENTS' | translate }}</h1>
@@ -44,7 +44,7 @@
       <tbody>
         <tr *ngFor="let item of torrents" (click)="checkHealth(item)">
           <td
-            (click)="play(item.torrent_download_link, movie.nameEng ? movie.nameEng : movie.nameOriginal ? movie.nameOriginal : movie.nameRus)">
+            (click)="play(item.torrent_download_link, movie.name_eng ? movie.name_eng : movie.name_original ? movie.name_original : movie.name_rus)">
             <fa-icon [icon]="faPlay"></fa-icon>
           </td>
           <td>{{ item.seeds }}/{{ item.peers }}</td>

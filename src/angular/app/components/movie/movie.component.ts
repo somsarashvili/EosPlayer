@@ -3,10 +3,9 @@ import { ZonaAPIClient } from './../../api/zona';
 import { ZonaTorrent } from './../../api/zona/models/zona-torrent.model';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MovieDetailsDTO } from '../../api/eos/models';
-import { APIClient } from '../../api/eos';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { ZonaDetails } from '../../api/zona/models';
 
 @Component({
   selector: 'app-movie',
@@ -15,10 +14,10 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
 })
 export class MovieComponent implements OnInit {
   private sub: any;
-  private id: number;
+  private id: string;
   private WebtorrentHealth;
   private torrentHealthRestarted = null;
-  movie: MovieDetailsDTO;
+  movie: ZonaDetails;
   torrents: ZonaTorrent[];
   faPlay = faPlay;
 
@@ -27,7 +26,6 @@ export class MovieComponent implements OnInit {
   constructor(
     private readonly mainProcess: MainProcessService,
     private readonly activeRoute: ActivatedRoute,
-    private readonly eosApi: APIClient,
     private readonly zonaApi: ZonaAPIClient,
     private loadingBar: LoadingBarService) {
     this.WebtorrentHealth = mainProcess.getWebTorrentHealthModule();
@@ -35,7 +33,7 @@ export class MovieComponent implements OnInit {
 
   ngOnInit() {
     this.sub = this.activeRoute.params.subscribe(params => {
-      this.id = +params['id'];
+      this.id = params['id'];
       this.loadData();
     });
   }
@@ -45,8 +43,8 @@ export class MovieComponent implements OnInit {
   }
 
   private loadData() {
-    this.eosApi.details({ id: this.id }).subscribe(data => {
-      this.movie = data;
+    this.zonaApi.details({ id: this.id }).subscribe(data => {
+      this.movie = data.response.docs[0];
       console.log(data);
     });
     this.zonaApi.torrents({ id: this.id }).subscribe(data => {
@@ -141,12 +139,12 @@ export class MovieComponent implements OnInit {
   }
 
   backdrop() {
-    if (this.movie.backdropId == null) {
+    if (this.movie.backdrop_id == null) {
       return `linear-gradient(rgba(30, 37, 43, 0.3), #1e252b),
           url(https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/vfPFP3W/movie-theater-film-reel-background-in-seamless-loop_xk6ivnb9__F0000.png)`;
     }
 
-    const id = this.movie.backdropId.toString();
+    const id = this.movie.backdrop_id.toString();
     let sub = id.substr(0, id.length - 3);
 
     if (sub === '') {
