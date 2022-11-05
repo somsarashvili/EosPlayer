@@ -1,6 +1,6 @@
 {
   "name": "eos-player",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "description": "EosPlayer",
   "main": "app/electron/main.js",
   "private": true,
@@ -11,7 +11,7 @@
     "start": "npm run postinstall && npm-run-all -p ng:serve electron:serve",
     "preparebuild": "npm run postinstall && npm run electron:serve-tsc && ng build",
     "prebuild": "npm run preparebuild -- -c production",
-    "build": "npm run prebuild -- -c production && electron-rebuild",
+    "build": "electron-builder build",
     "build:dev": "npm run prebuild -- -c dev",
     "build:prod": "npm run prebuild -- -c production",
     "ng:serve": "ng serve",
