@@ -1,6 +1,6 @@
 {
   "name": "eos-player",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "EosPlayer",
   "main": "app/electron/main.js",
   "private": true,
