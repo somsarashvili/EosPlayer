@@ -1,6 +1,6 @@
 {
   "name": "eos-player",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "EosPlayer",
   "main": "app/electron/main.js",
   "private": true,
@@ -73,8 +73,8 @@
     "zone.js": "~0.11.8"
   },
   "dependencies": {
-    "webtorrent": "1.9.1",
     "@electron/remote": "^2.0.8",
+    "@types/webtorrent": "^0.109.3",
     "custom-electron-titlebar": "^4.1.0",
     "electron-log": "4.4.8",
     "electron-updater": "5.3.0",
@@ -82,6 +82,7 @@
     "reflect-metadata": "0.1.13",
     "v8-compile-cache": "2.3.0",
     "vlc-command": "^1.2.0",
+    "webtorrent": "1.9.1",
     "webtorrent-health": "1.2.0"
   }
 }

@@ -42,6 +42,8 @@ export class PlayerService {
 
   async close() {
     if (this.torrent) {
+      this.webTorrent.remove(this.torrent);
+      this.torrent.removeAllListeners('download');
       this.torrent.destroy();
       this.torrent = null;
     }
@@ -82,7 +84,7 @@ export class PlayerService {
       const port = this.generateTrandomPort();
       let fileIndex = 0;
 
-      this.webTorrent.add(playRequest.torrent, { path: playRequest.savePath }, (torrentClient: any) => {
+      this.webTorrent.add(playRequest.torrent, { path: playRequest.savePath }, (torrentClient) => {
         this.torrent = torrentClient;
         this.torrent.deselect(0, torrentClient.pieces.length - 1, 0); // Remove default selection (whole torrent)
         // tslint:disable-next-line: forin
