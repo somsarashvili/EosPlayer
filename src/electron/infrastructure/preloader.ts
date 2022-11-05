@@ -20,15 +20,15 @@ contextBridge.exposeInMainWorld(
     },
     getEnvironment: () => process.env.Environment,
     setTitleBar: () => {
-      const { Titlebar, Color } = require('custom-electron-titlebar');
-      if (!require('@electron/remote').getCurrentWindow().isFullScreen()) {
-        const MyTitleBar = new Titlebar({
-          backgroundColor: Color.fromHex('#394146'),
-          menu: null,
-          icon: 'favicon.png',
-        });
-        document.body.classList.add('with-titlebar');
-      }
+      // const { Titlebar, Color } = require('custom-electron-titlebar');
+      // //if (!require('@electron/remote').getCurrentWindow().isFullScreen()) {
+      //   const MyTitleBar = new Titlebar({
+      //     backgroundColor: Color.fromHex('#394146'),
+      //     menu: null,
+      //     icon: 'favicon.png',
+      //   });
+      //   document.body.classList.add('with-titlebar');
+      // //}
     },
     getWebTorrentHealthModule: () => require('webtorrent-health'),
     showOpenDialog: async () => (await require('@electron/remote').dialog.showOpenDialog({

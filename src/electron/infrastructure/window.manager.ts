@@ -26,11 +26,11 @@ export class WindowManager {
       return;
     }
     const workAreaSize = this.primaryDisplay.workAreaSize;
-    setupTitlebar();
+    // setupTitlebar();
     this.mainWindow = new BrowserWindow({
       x: 0,
       y: 0,
-      frame: false,
+      frame: true,
       width: workAreaSize.width,
       height: workAreaSize.height,
       webPreferences: {
@@ -42,7 +42,7 @@ export class WindowManager {
       icon: Constants.WebPath + '/favicon.png',
     });
     remote.enable(this.mainWindow.webContents);
-    attachTitlebarToWindow(this.mainWindow);
+    //attachTitlebarToWindow(this.mainWindow);
     this.mainWindow.hide();
     this.mainWindow.webContents.session.webRequest.onBeforeSendHeaders(
       (details, callback) => {
@@ -81,11 +81,8 @@ export class WindowManager {
       this.mainWindow.webContents.openDevTools();
     }
 
-
     this.mainWindow.removeMenu();
-
     this.mainWindow.maximize();
-
 
     this.mainWindow.on('closed', () => {
       this.mainWindow = null;
