@@ -32,5 +32,8 @@
   "exclude": [
     "../../node_modules",
     "**/*.spec.ts"
-  ]
+  ],
+  "extraResources": [
+    "./node_modules/@electron/remote/**"
+  ],
 }

@@ -3,6 +3,9 @@ import { injectable } from 'inversify';
 import * as url from 'url';
 import * as path from 'path';
 import { Constants } from '../../core/constants';
+import * as remote from '@electron/remote/main';
+const { setupTitlebar, attachTitlebarToWindow } = require("custom-electron-titlebar/main");
+
 
 @injectable()
 export class WindowManager {
@@ -11,6 +14,7 @@ export class WindowManager {
 
   constructor() {
     this.primaryDisplay = screen.getPrimaryDisplay();
+    remote.initialize();
   }
 
   get HasWindow(): boolean {
@@ -22,7 +26,7 @@ export class WindowManager {
       return;
     }
     const workAreaSize = this.primaryDisplay.workAreaSize;
-
+    setupTitlebar();
     this.mainWindow = new BrowserWindow({
       x: 0,
       y: 0,
@@ -30,14 +34,15 @@ export class WindowManager {
       width: workAreaSize.width,
       height: workAreaSize.height,
       webPreferences: {
-        nodeIntegration: false, // is default value after Electron v5
+        nodeIntegration: true, // is default value after Electron v5
         contextIsolation: true, // protect against prototype pollution
-        enableRemoteModule: true, // turn off remote
         preload: __dirname + '/preloader.js',
-        webSecurity: false
+        webSecurity: false,
       },
       icon: Constants.WebPath + '/favicon.png',
     });
+    remote.enable(this.mainWindow.webContents);
+    attachTitlebarToWindow(this.mainWindow);
     this.mainWindow.hide();
     this.mainWindow.webContents.session.webRequest.onBeforeSendHeaders(
       (details, callback) => {
@@ -56,7 +61,7 @@ export class WindowManager {
       require('electron-reload')(__dirname, {
         electron: require(process.cwd() + '/node_modules/electron'),
       });
-      this.mainWindow.loadURL('http://zsolr3.zonasearch.com', {
+      this.mainWindow.loadURL('http://localhost:4200', {
         userAgent: Constants.UserAgent,
       });
     } else {
@@ -87,7 +92,7 @@ export class WindowManager {
       app.quit();
     });
 
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       this.mainWindow.webContents.once('dom-ready', () => {
         resolve();
       });
@@ -101,3 +106,4 @@ export class WindowManager {
     this.mainWindow.focus();
   }
 }
+

@@ -19,7 +19,7 @@ shared/**/*.js
 !src/angular/assets/socket.io.js
 src/electron/routes/Router.ts
 src/socket-io/Router.ts
-
+.angular
 # dependencies
 /node_modules
 

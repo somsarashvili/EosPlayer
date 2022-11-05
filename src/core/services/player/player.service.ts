@@ -1,7 +1,6 @@
 import { EventService } from './../event/event.service';
 import { PlayableExtenstions } from './player.playable';
-import * as WebTorrentType from 'webtorrent';
-import * as WebTorrent from 'webtorrent-hybrid';
+import * as WebTorrent from 'webtorrent';
 import * as vlc from 'vlc-command';
 import { Server } from 'net';
 import * as child_process from 'child_process';
@@ -11,8 +10,8 @@ import { PlayTorrentRequest } from '../../../shared/types/PlayTorrentRequest';
 
 @injectable()
 export class PlayerService {
-  private webTorrent: WebTorrentType.Instance;
-  private torrent: WebTorrentType.Torrent;
+  private webTorrent: WebTorrent.Instance;
+  private torrent: WebTorrent.Torrent;
   private server: Server;
   private vlc: child_process.ChildProcess;
   private playerData: PlayerModel;

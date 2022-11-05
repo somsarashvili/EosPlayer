@@ -1,75 +1,38 @@
 const {
   contextBridge,
   ipcRenderer,
-  remote
 } = require('electron');
-const { Titlebar, Color } = require('custom-electron-titlebar');
-(() => {
 
-  function on(channel, listener) {
-    return ipcRenderer.on(channel, listener);
-  }
-  function once(channel, listener) {
-    return ipcRenderer.once(channel, listener);
-  }
-  function send(channel, ...args) {
-    return ipcRenderer.send(channel, ...args);
-  }
-  function sendSync(channel, ...args) {
-    return ipcRenderer.sendSync(channel, ...args);
-  }
-  function isFullScreen() {
-    return remote.getCurrentWindow().isFullScreen();
-  }
-  function isElectron() {
-    return window && window.process && window.process.type;
-  }
-  function close() {
-    remote.getCurrentWindow().close();
-  }
-  function relaunch() {
-    remote.app.relaunch();
-    remote.app.exit();
-  }
-  function getEnvironment() {
-    return process.env.Environment;
-  }
-  function setTitleBar() {
-    if (!isFullScreen()) {
-      const MyTitleBar = new Titlebar({
-        backgroundColor: Color.fromHex('#394146'),
-        menu: null,
-        icon: 'favicon.png',
-      });
-      document.body.classList.add('with-titlebar');
-    }
-  }
-  async function showOpenDialog() {
-    return (await remote.dialog.showOpenDialog({
+contextBridge.exposeInMainWorld(
+  'MainProcessAPI',
+  {
+    defaultDownloadPath: require('@electron/remote').app.getPath('documents') + '\\Eos',
+    on: (channel, listener) => ipcRenderer.on(channel, listener),
+    once: (channel, listener) => ipcRenderer.once(channel, listener),
+    send: (channel, ...args) => ipcRenderer.send(channel, ...args),
+    sendSync: (channel, ...args) => ipcRenderer.sendSync(channel, ...args),
+    isFullScreen: () => require('@electron/remote').getCurrentWindow().isFullScreen(),
+    isElectron: () => window && window.process && window.process.type,
+    close: () => require('@electron/remote').getCurrentWindow().close(),
+    relaunch: () => {
+      require('@electron/remote').app.relaunch();
+      require('@electron/remote').app.exit();
+    },
+    getEnvironment: () => process.env.Environment,
+    setTitleBar: () => {
+      const { Titlebar, Color } = require('custom-electron-titlebar');
+      if (!require('@electron/remote').getCurrentWindow().isFullScreen()) {
+        const MyTitleBar = new Titlebar({
+          backgroundColor: Color.fromHex('#394146'),
+          menu: null,
+          icon: 'favicon.png',
+        });
+        document.body.classList.add('with-titlebar');
+      }
+    },
+    getWebTorrentHealthModule: () => require('webtorrent-health'),
+    showOpenDialog: async () => (await require('@electron/remote').dialog.showOpenDialog({
       properties: ['openDirectory']
-    })).filePaths[0];
+    })).filePaths[0]
   }
-
-  function getWebTorrentHealthModule() {
-    return require('webtorrent-health');
-  }
-
-  contextBridge.exposeInMainWorld(
-    'MainProcessAPI',
-    {
-      defaultDownloadPath: remote.app.getPath('documents') + '\\Eos',
-      on,
-      once,
-      send,
-      sendSync,
-      isFullScreen,
-      isElectron,
-      close,
-      relaunch,
-      getEnvironment,
-      setTitleBar,
-      getWebTorrentHealthModule,
-      showOpenDialog
-    }
-  );
-})();
+);

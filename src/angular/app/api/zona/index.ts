@@ -38,7 +38,7 @@ export class ZonaAPIClientModule {
    * @param { ZonaAPIClientModuleConfig } config
    * @returns { ModuleWithProviders }
    */
-  static forRoot(config: ZonaAPIClientModuleConfig = {}): ModuleWithProviders {
+  static forRoot(config: ZonaAPIClientModuleConfig = {}): ModuleWithProviders<ZonaAPIClientModule> {
     return {
       ngModule: ZonaAPIClientModule,
       providers: [

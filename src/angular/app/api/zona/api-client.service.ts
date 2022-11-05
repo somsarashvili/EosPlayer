@@ -76,7 +76,7 @@ export class ZonaAPIClient implements ZonaAPIClientInterface {
     const path = '/solr/torrent/select/';
     const options: ZonaAPIHttpOptions = { ...this.options, ...requestHttpOptions };
 
-    options.params = options.params.set('q', `((kinopoisk_id:${args.id})AND(deleted:false))AND(indexed%3A[1+TO+8])`);
+    options.params = options.params.set('q', `((kinopoisk_id:${args.id})AND(deleted:false))`);
     options.params = options.params.set('fl', 'id,kinopoisk_id,broadcast_id,translate_info,files,episodes,episodesInfo,episodes_map_auto,languages,language,languages_mod,languages_parser,subtitles,subtitles_mod,subtitles_parser,private,hash,torrent_download_link,seeds,peers,size_bytes,type3d,quality_id,audio_quality_id,trailer,resolution,video_info,loading_time_sum,loading_success_count,loading_fail_count');
     options.params = options.params.set('version', '2.2');
     options.params = options.params.set('start', '0');
