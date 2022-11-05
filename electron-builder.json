@@ -16,7 +16,7 @@
   "mac": {
     "icon": "app/web",
     "target": [
-      "dmg", "zip"
+      "dmg"
     ]
   },
   "linux": {
