@@ -28,7 +28,6 @@ export function RegisterRoutes(socket: Socket, DIContainer: any) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         socket.on('{{path}}', async (rawMessage) => {
             const message = JSON.parse(rawMessage);
-            console.log('ipc receive', '{{path}}');
             const controller = DIContainer.get({{../name}});
 
             try {                

@@ -1,5 +1,5 @@
 import { Common } from './common';
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -32,6 +32,7 @@ export class AppComponent {
   playerStatus: PlayerModel;
 
   constructor(
+    private zone: NgZone,
     private translate: TranslateService,
     private mainProcessService: MainProcessService,
     private location: Location,
@@ -55,13 +56,19 @@ export class AppComponent {
       localStorage.setItem('language', 'en');
     }
     translate.setDefaultLang(localStorage.getItem('language'));
-    console.log('AppConfig', AppConfig);
     window.Common = Common;
 
-    interval(500).subscribe(async () => {
-      this.playerStatus = (await this.mainProcessService.getPlayerStatus()).data;
+    this.mainProcessService.getPlayerStatus().then(resp => {
+      this.playerStatus = resp.data;
     });
 
+    mainProcessService.on('event.playerStatus', (resp: PlayerModel) => {
+      this.zone.run(() => this.playerStatus = resp);
+    });
+
+    mainProcessService.on('event.playerClosed', () => {
+      this.zone.run(() => this.playerStatus.playing = false);
+    })
   }
 
   search() {
