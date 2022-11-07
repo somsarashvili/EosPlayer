@@ -73,7 +73,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   loadData() {
-    console.log(this.loading, this.done);
     if (this.loading || this.done) { return; }
     this.loading = true;
     const requst: any = { page: this.page, perPage: this.perPage };
@@ -87,7 +86,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           'rejectUnauthorized': 'false'
         })
     }).subscribe((data) => {
-      console.log(data);
       this.loading = false;
       if (data.response.docs.length === 0) {
         this.done = true;
@@ -100,7 +98,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
-    console.log('removing');
     window.removeEventListener('scroll', this.onScrollCallback, true);
   }
 

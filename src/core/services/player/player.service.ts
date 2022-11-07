@@ -15,6 +15,7 @@ export class PlayerService {
   private server: Server;
   private vlc: child_process.ChildProcess;
   private playerData: PlayerModel;
+  private eventInterval?: NodeJS.Timer;
 
   constructor(
     @inject(EventService) private eventService: EventService
@@ -41,6 +42,7 @@ export class PlayerService {
   }
 
   async close() {
+    clearInterval(this.eventInterval);
     if (this.torrent) {
       this.webTorrent.remove(this.torrent);
       this.torrent.removeAllListeners('download');
@@ -113,25 +115,25 @@ export class PlayerService {
           if (err) { return console.error('could not find vlc command path'); }
 
           if (process.platform === 'win32') {
-            console.log(cmd);
             this.vlc = child_process.execFile(cmd, ['--fullscreen', url], function (err, stdout) {
               if (err) return console.error(err);
-              console.log(stdout);
-            });
-            this.vlc.once('close', () => {
-              this.close();
-              this.eventService.sendEvent('event.playerClosed', true);
             });
           } else {
-            child_process.exec(cmd + ' --fullscreen ' + url, function (err, stdout) {
+            this.vlc = child_process.exec(cmd + ' --fullscreen ' + url, function (err, stdout) {
               if (err) return console.error(err);
-              console.log(stdout);
             });
           }
+          this.vlc.once('close', () => {
+            this.close();
+            this.eventService.sendEvent('event.playerClosed', true);
+          });
         });
-        console.log('sending torrent');
         resolve(true);
       });
+
+      this.eventInterval = setInterval(() => {
+        this.eventService.sendEvent('event.playerStatus', this.getPlayerStatus())
+      }, 500);
     });
   }
 

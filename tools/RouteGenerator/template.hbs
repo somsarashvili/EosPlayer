@@ -27,7 +27,6 @@ export function RegisterRoutes(DIContainer: any) {
         
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         ipcMain.on('{{path}}', async (event, callerId, args) => {
-            console.log('ipc receive', '{{path}}');
             const controller = DIContainer.get({{../name}});
 
             try {                

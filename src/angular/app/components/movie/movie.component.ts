@@ -45,7 +45,6 @@ export class MovieComponent implements OnInit {
   private loadData() {
     this.zonaApi.details({ id: this.id }).subscribe(data => {
       this.movie = data.response.docs[0];
-      console.log(data);
     });
     this.zonaApi.torrents({ id: this.id }).subscribe(data => {
       this.torrents = data.response.docs.sort((a, b) => {
@@ -92,9 +91,7 @@ export class MovieComponent implements OnInit {
         this.WebtorrentHealth(torrent.torrent_download_link, {
           trackers: window.Common.trackers
         }, (err, res) => {
-          console.log('checking', cancelled, err);
           if (cancelled || err) {
-            console.log(cancelled, err);
             clearTimeout(timeout);
             reject(err);
             this.loadingBar.complete();
@@ -109,7 +106,6 @@ export class MovieComponent implements OnInit {
             });
             const health = window.Common.healthMap[h];
             const ratio = res.peers > 0 ? res.seeds / res.peers : +res.seeds;
-            console.log('resolving');
             clearTimeout(timeout);
             resolve({
               health: health,

@@ -10,7 +10,6 @@ export class EventService {
   constructor() { }
 
   subscribe(event, callerId, arg) {
-    console.log('subscribing');
     const subscriber = this.subscribers.filter((e) => e.id == event.sender.id)[0];
     if (!subscriber) {
       const sender: IIPCSender = {
